@@ -1,0 +1,16 @@
+{
+  "name": "Riyaaz",
+  "short_name": "Riyaaz",
+  "description": "Singing practice: live pitch against your Sa, tanpura, and raag exercises. Works offline; audio never leaves the phone.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#16120f",
+  "theme_color": "#16120f",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

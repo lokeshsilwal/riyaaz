@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>Riyaaz</title>
+<meta name="theme-color" content="#16120f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Riyaaz">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{
+  --bg:#16120f; --surface:#211b17; --surface2:#2b241f; --line:#3a312a;
+  --text:#f4ede5; --muted:#a8998b; --faint:#6d6157;
+  --accent:#f59e0b; --accent2:#fbbf24;
+  --good:#4ade80; --ok:#fbbf24; --bad:#f87171;
+  --safe-b: env(safe-area-inset-bottom, 0px); --safe-t: env(safe-area-inset-top, 0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+  font:15px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;overscroll-behavior:none}
+body{display:flex;flex-direction:column;height:100dvh;padding-top:var(--safe-t)}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+[hidden]{display:none!important}
+
+/* header */
+header{display:flex;align-items:center;gap:8px;padding:10px 12px 6px}
+.brand{font-weight:700;font-size:18px;letter-spacing:.3px;margin-right:auto}
+.brand span{color:var(--accent)}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;white-space:nowrap}
+.chip b{color:var(--accent2)}
+.chip.on{background:var(--accent);color:#1a1209;border-color:var(--accent)}
+.chip.on b{color:#1a1209}
+.icon{width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--line);font-size:18px;line-height:1}
+
+/* tabs + raag row */
+.bar{display:flex;gap:8px;padding:4px 12px 8px;align-items:center}
+.seg{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px}
+.seg button{padding:6px 14px;border-radius:7px;color:var(--muted);font-weight:600}
+.seg button.on{background:var(--surface2);color:var(--text)}
+select{appearance:none;-webkit-appearance:none;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23a8998b'/%3E%3C/svg%3E") no-repeat right 10px center;
+  border:1px solid var(--line);border-radius:10px;padding:7px 28px 7px 10px;min-width:0}
+#raagSel{flex:1}
+.link{color:var(--accent2);font-size:14px;padding:6px 4px}
+
+/* swara notation: komal underlined, tivra tick, mandra dot below, taar dot above */
+.sw{position:relative;display:inline-block;white-space:nowrap}
+.sw.komal{text-decoration:underline;text-decoration-thickness:.08em;text-underline-offset:.18em}
+.sw.tivra::before{content:"";position:absolute;left:.32em;top:-.18em;width:.07em;min-width:1.5px;height:.32em;background:currentColor}
+.sw.mandra::after,.sw.taar::after{content:"";position:absolute;left:50%;width:.16em;height:.16em;min-width:3px;min-height:3px;margin-left:-.08em;border-radius:50%;background:currentColor}
+.sw.mandra::after{bottom:-.3em}
+.sw.taar::after{top:-.22em}
+.sw.komal.mandra::after{bottom:-.42em}
+
+/* live readout */
+#readout{display:flex;align-items:center;gap:14px;padding:4px 16px 8px;min-height:92px}
+#bigSwara{font-size:54px;font-weight:700;min-width:120px;line-height:1.1;text-align:center}
+#bigSwara.quiet{color:var(--faint)}
+.rinfo{flex:1;min-width:0}
+#centsTxt{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+#noteTxt{color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+#varjitTxt{color:#c4a1ff;font-size:13px;min-height:18px}
+.meter{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,var(--bad) 0,var(--ok) 25%,var(--good) 40%,var(--good) 60%,var(--ok) 75%,var(--bad) 100%);opacity:.35;margin:6px 0 2px}
+.meterWrap{position:relative}
+.needle{position:absolute;top:-4px;width:4px;height:18px;margin-left:-2px;border-radius:2px;background:var(--text);left:50%;transition:left .08s linear;box-shadow:0 0 0 2px var(--bg)}
+.mscale{display:flex;justify-content:space-between;font-size:11px;color:var(--faint)}
+
+/* practice */
+#practiceTop{padding:0 12px 6px}
+.prow{display:flex;gap:8px;align-items:center}
+#exSel{flex:1}
+#chips{display:flex;gap:6px;overflow-x:auto;padding:12px 2px 6px;scrollbar-width:none}
+#chips::-webkit-scrollbar{display:none}
+.nchip{flex:0 0 auto;min-width:44px;text-align:center;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 6px 4px;font-weight:600;font-size:15px}
+.nchip small{display:block;font-size:10px;font-weight:500;color:var(--muted);min-height:13px;margin-top:3px}
+.nchip.cur{border-color:var(--accent);box-shadow:0 0 0 2px rgba(245,158,11,.35)}
+.nchip.good{background:rgba(74,222,128,.15);border-color:rgba(74,222,128,.5)}
+.nchip.ok{background:rgba(251,191,36,.13);border-color:rgba(251,191,36,.5)}
+.nchip.skip{opacity:.45}
+#target{display:flex;align-items:center;gap:14px;padding:4px 4px 0}
+.ring{position:relative;width:84px;height:84px;flex:0 0 84px}
+.ring svg{transform:rotate(-90deg)}
+.ring .lbl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700}
+.tinfo{flex:1;min-width:0}
+#tSing{color:var(--muted);font-size:13px}
+#tDev{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;min-height:28px}
+#tHint{font-size:13px;color:var(--accent2);min-height:18px}
+
+/* graph */
+#graphWrap{position:relative;flex:1;min-height:180px;margin:0 8px;border-radius:14px;overflow:hidden;background:var(--surface)}
+#graph{position:absolute;inset:0;width:100%;height:100%;display:block}
+#hint{position:absolute;left:0;right:0;bottom:12px;text-align:center;color:var(--muted);font-size:13px;padding:0 20px;pointer-events:none}
+
+/* summary */
+#summary{position:absolute;inset:0;background:var(--surface);padding:14px;overflow:auto;z-index:2}
+#summary h3{margin:0 0 4px}
+.score{font-size:40px;font-weight:800;color:var(--accent2)}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left;font-variant-numeric:tabular-nums}
+th{color:var(--muted);font-weight:500;font-size:12px}
+.tips{margin:10px 0 0;padding-left:18px;color:var(--text)}
+.tips li{margin:3px 0}
+
+/* footer */
+footer{display:flex;gap:10px;align-items:center;justify-content:center;padding:10px 12px calc(10px + var(--safe-b))}
+.big{min-width:150px;height:52px;border-radius:26px;background:var(--accent);color:#1a1209;font-weight:700;font-size:17px;padding:0 22px}
+.big.stop{background:var(--surface2);color:var(--text);border:1px solid var(--line)}
+.sec{height:44px;border-radius:22px;background:var(--surface);border:1px solid var(--line);padding:0 16px;font-weight:600}
+
+/* sheets */
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10;display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:100%;max-width:560px;max-height:88dvh;overflow:auto;background:var(--surface);border-radius:18px 18px 0 0;padding:16px 16px calc(20px + var(--safe-b))}
+.sheet h2{margin:0 0 6px;font-size:18px;display:flex;align-items:center}
+.sheet h2 button{margin-left:auto;font-size:15px;color:var(--accent2)}
+.sheet h4{margin:18px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.notes{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.notes button,.opts button{background:var(--surface2);border:1px solid var(--line);border-radius:9px;padding:9px 0;font-weight:600}
+.notes button.on,.opts button.on{background:var(--accent);color:#1a1209;border-color:var(--accent)}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts button{padding:8px 12px}
+.row{display:flex;align-items:center;gap:10px;margin:8px 0}
+.row label{flex:0 0 112px;color:var(--muted);font-size:14px}
+.row input[type=range]{flex:1;accent-color:var(--accent)}
+.row output{width:56px;text-align:right;font-variant-numeric:tabular-nums;font-size:14px}
+.note{color:var(--muted);font-size:13px;margin:6px 0}
+.toggle{display:flex;align-items:center;gap:10px;margin:10px 0}
+.toggle input{width:22px;height:22px;accent-color:var(--accent)}
+.info dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:10px 0}
+.info dt{color:var(--muted)}
+.info .seq{font-size:20px;font-weight:600;line-height:2.4;word-spacing:.25em}
+.legend{color:var(--muted);font-size:13px;margin-top:14px;line-height:1.9}
+.legend .sw{color:var(--text);font-weight:600}
+.toast{position:fixed;left:50%;bottom:calc(84px + var(--safe-b));transform:translateX(-50%);background:var(--surface2);border:1px solid var(--line);border-radius:10px;padding:8px 14px;font-size:14px;z-index:20;max-width:90%;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Riy<span>aa</span>z</div>
+  <button id="saBtn" class="chip" aria-label="Change Sa">Sa <b id="saLabel">C3</b></button>
+  <button id="tanBtn" class="chip" aria-label="Tanpura on/off">Tanpura</button>
+  <button id="setBtn" class="icon" aria-label="Settings">⚙︎</button>
+</header>
+
+<div class="bar">
+  <div class="seg" role="tablist">
+    <button data-tab="live" class="on">Live</button>
+    <button data-tab="practice">Practice</button>
+  </div>
+  <select id="raagSel" aria-label="Raag"></select>
+  <button id="infoBtn" class="link">About</button>
+</div>
+
+<section id="readout">
+  <div id="bigSwara" class="quiet">–</div>
+  <div class="rinfo">
+    <div id="centsTxt">&nbsp;</div>
+    <div class="meterWrap"><div class="meter"></div><div id="needle" class="needle" hidden></div></div>
+    <div class="mscale"><span>−50¢ flat</span><span>in tune</span><span>sharp +50¢</span></div>
+    <div id="noteTxt">&nbsp;</div>
+    <div id="varjitTxt"></div>
+  </div>
+</section>
+
+<section id="practiceTop" hidden>
+  <div class="prow">
+    <select id="exSel" aria-label="Exercise"></select>
+    <button id="hearBtn" class="sec">▶ Hear</button>
+  </div>
+  <div id="chips"></div>
+  <div id="target">
+    <div class="ring">
+      <svg width="84" height="84" viewBox="0 0 84 84">
+        <circle cx="42" cy="42" r="36" fill="none" stroke="#3a312a" stroke-width="7"/>
+        <circle id="ringArc" cx="42" cy="42" r="36" fill="none" stroke="#4ade80" stroke-width="7" stroke-linecap="round" stroke-dasharray="226.2" stroke-dashoffset="226.2"/>
+      </svg>
+      <div class="lbl" id="tLabel">–</div>
+    </div>
+    <div class="tinfo">
+      <div id="tSing">Press Start practice</div>
+      <div id="tDev">&nbsp;</div>
+      <div id="tHint"></div>
+    </div>
+  </div>
+</section>
+
+<div id="graphWrap">
+  <canvas id="graph"></canvas>
+  <div id="hint"></div>
+  <section id="summary" hidden></section>
+</div>
+
+<footer>
+  <button id="micBtn" class="big">Start</button>
+  <button id="skipBtn" class="sec" hidden>Skip</button>
+  <button id="restartBtn" class="sec" hidden>Restart</button>
+</footer>
+
+<div id="setScrim" class="scrim" hidden>
+  <div class="sheet" role="dialog" aria-label="Settings">
+    <h2>Settings <button data-close>Done</button></h2>
+
+    <h4>Your Sa (scale)</h4>
+    <div class="notes" id="noteGrid"></div>
+    <div class="row"><label>Octave</label><div class="opts" id="octOpts"></div></div>
+    <div class="row"><label>Fine tune</label><input type="range" id="fine" min="-50" max="50" step="1"><output id="fineOut"></output></div>
+    <div class="row"><label></label><button class="sec" id="hearSa">▶ Hear Sa</button><span class="note" id="saHz"></span></div>
+    <p class="note">Many men pitch Sa between C and D in octave 3; many women between G# and B in octave 3. Use fine tune to match a harmonium or a recording.</p>
+
+    <h4>Tuning of the swaras</h4>
+    <div class="opts" id="tuneOpts">
+      <button data-v="just">Natural (with tanpura)</button>
+      <button data-v="equal">Harmonium / keyboard</button>
+    </div>
+    <p class="note">Natural tuning matches the tanpura: Ga, Dha and Ni sit a little lower than on a harmonium.</p>
+
+    <h4>Tanpura</h4>
+    <div class="row"><label>First string</label><div class="opts" id="firstOpts">
+      <button data-v="auto">Auto</button><button data-v="P">Pa</button><button data-v="M">Ma</button><button data-v="N">Ni</button>
+    </div></div>
+    <div class="row"><label>Volume</label><input type="range" id="tanVol" min="0" max="1" step="0.01"><output id="tanVolOut"></output></div>
+    <div class="row"><label>Speed</label><input type="range" id="tanCycle" min="3" max="7" step="0.1"><output id="tanCycleOut"></output></div>
+    <p class="note">Auto picks Pa, or Ma for raags without Pa (such as Malkauns). Earphones work best: the app can tell the tanpura from your voice when the tanpura plays through the speaker, but your singing should be clearly louder than it.</p>
+
+    <h4>Practice</h4>
+    <div class="row"><label>Tolerance</label><div class="opts" id="tolOpts">
+      <button data-v="15">±15¢</button><button data-v="25">±25¢</button><button data-v="40">±40¢</button>
+    </div></div>
+    <div class="row"><label>Hold each note</label><div class="opts" id="holdOpts">
+      <button data-v="0.5">0.5 s</button><button data-v="1">1 s</button><button data-v="2">2 s</button><button data-v="3">3 s</button>
+    </div></div>
+    <label class="toggle"><input type="checkbox" id="playRef"> Play each note before I sing it</label>
+
+    <h4>Microphone</h4>
+    <div class="row"><label>Sensitivity</label><input type="range" id="sens" min="0.4" max="2.5" step="0.05"><output id="sensOut"></output></div>
+    <label class="toggle"><input type="checkbox" id="echo"> Echo cancellation (try this if the tanpura plays through the speaker)</label>
+    <p class="note">Off by default so your voice is not altered. Everything stays on this phone — nothing is recorded or uploaded.</p>
+  </div>
+</div>
+
+<div id="infoScrim" class="scrim" hidden>
+  <div class="sheet info" role="dialog" aria-label="Raag information">
+    <h2 id="infoTitle">Raag <button data-close>Close</button></h2>
+    <div id="infoBody"></div>
+    <div class="legend">
+      Notation: <span class="sw komal">Re</span> komal (flat) ·
+      <span class="sw tivra">Ma</span> tivra (sharp) ·
+      <span class="sw mandra">Ni</span> lower octave (mandra) ·
+      <span class="sw taar">Sa</span> upper octave (taar)
+    </div>
+  </div>
+</div>
+
+<script>
+// === RIYAAZ CORE START ===
+// Everything between the START/END markers is pure JavaScript with no DOM or
+// Web Audio dependencies, so the test bench can load the exact same code in Node.
+var RiyaazCore = (function () {
+  'use strict';
+
+  // ---------------------------------------------------------------- swaras
+  // 12 positions within an octave, relative to Sa.
+  // lower-case letter = komal, M' = tivra Ma.
+  var SWARA = [
+    { id: 'S', name: 'Sa', komal: false, tivra: false },
+    { id: 'r', name: 'Re', komal: true, tivra: false },
+    { id: 'R', name: 'Re', komal: false, tivra: false },
+    { id: 'g', name: 'Ga', komal: true, tivra: false },
+    { id: 'G', name: 'Ga', komal: false, tivra: false },
+    { id: 'M', name: 'Ma', komal: false, tivra: false },
+    { id: "M'", name: 'Ma', komal: false, tivra: true },
+    { id: 'P', name: 'Pa', komal: false, tivra: false },
+    { id: 'd', name: 'Dha', komal: true, tivra: false },
+    { id: 'D', name: 'Dha', komal: false, tivra: false },
+    { id: 'n', name: 'Ni', komal: true, tivra: false },
+    { id: 'N', name: 'Ni', komal: false, tivra: false }
+  ];
+
+  // Cents of each position above Sa.
+  // 'just': natural ratios that sit in tune with the tanpura
+  //   S 1/1, r 16/15, R 9/8, g 6/5, G 5/4, M 4/3, M' 45/32, P 3/2,
+  //   d 8/5, D 5/3, n 16/9, N 15/8
+  // 'equal': 12-tone equal temperament (harmonium / keyboard).
+  var TUNING = {
+    just: [0, 111.73, 203.91, 315.64, 386.31, 498.04, 590.22, 701.96, 813.69, 884.36, 996.09, 1088.27],
+    equal: [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100]
+  };
+
+  var NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+
+  function noteFreq(noteIndex, octave, a4) {
+    var midi = (octave + 1) * 12 + noteIndex;
+    return (a4 || 440) * Math.pow(2, (midi - 69) / 12);
+  }
+
+  // Absolute step (semitone index with octave, e.g. -1 = mandra Ni, 12 = taar Sa)
+  // -> cents above Sa under a tuning.
+  function stepCents(step, tuning) {
+    var t = TUNING[tuning] || TUNING.just;
+    var oct = Math.floor(step / 12);
+    var deg = step - oct * 12;
+    return oct * 1200 + t[deg];
+  }
+
+  // Nearest swara to a pitch (cents above Sa). `allowed` (optional) is a
+  // boolean[12] restricting the candidates; the unrestricted nearest is also
+  // returned so the UI can flag notes that are outside the raag.
+  function nearestSwara(cents, tuning, allowed) {
+    var t = TUNING[tuning] || TUNING.just;
+    var base = Math.floor(cents / 1200);
+    var best = null, bestA = null;
+    for (var o = base - 1; o <= base + 1; o++) {
+      for (var d = 0; d < 12; d++) {
+        var target = o * 1200 + t[d];
+        var dev = cents - target;
+        var ad = Math.abs(dev);
+        if (!best || ad < Math.abs(best.dev)) best = { deg: d, oct: o, step: o * 12 + d, target: target, dev: dev };
+        if (allowed && allowed[d] && (!bestA || ad < Math.abs(bestA.dev))) bestA = { deg: d, oct: o, step: o * 12 + d, target: target, dev: dev };
+      }
+    }
+    best.inRaag = allowed ? !!allowed[best.deg] : true;
+    best.nearestAllowed = bestA || best;
+    return best;
+  }
+
+  // ------------------------------------------------------------------ FFT
+  function makeFFT(n) {
+    var levels = Math.round(Math.log2(n));
+    if (1 << levels !== n) throw new Error('FFT size must be a power of 2');
+    var cos = new Float64Array(n / 2), sin = new Float64Array(n / 2);
+    for (var i = 0; i < n / 2; i++) { cos[i] = Math.cos(2 * Math.PI * i / n); sin[i] = Math.sin(2 * Math.PI * i / n); }
+    var rev = new Uint32Array(n);
+    for (i = 0; i < n; i++) {
+      var r = 0, x = i;
+      for (var b = 0; b < levels; b++) { r = (r << 1) | (x & 1); x >>>= 1; }
+      rev[i] = r;
+    }
+    // in-place complex FFT; inverse=true gives unnormalised inverse
+    return function fft(re, im, inverse) {
+      var i, j, t, k;
+      for (i = 0; i < n; i++) {
+        j = rev[i];
+        if (j > i) { t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; }
+      }
+      var sgn = inverse ? 1 : -1;
+      for (var size = 2; size <= n; size *= 2) {
+        var half = size / 2, step = n / size;
+        for (i = 0; i < n; i += size) {
+          for (j = 0, k = 0; j < half; j++, k += step) {
+            var l = i + j + half;
+            var wr = cos[k], wi = sgn * sin[k];
+            var tr = re[l] * wr - im[l] * wi;
+            var ti = re[l] * wi + im[l] * wr;
+            re[l] = re[i + j] - tr; im[l] = im[i + j] - ti;
+            re[i + j] += tr; im[i + j] += ti;
+          }
+        }
+      }
+    };
+  }
+
+  // 2nd-order Butterworth high-pass (RBJ cookbook) and a direct-form-I step
+  function biquadHP(fc, sr) {
+    var w = 2 * Math.PI * fc / sr, c = Math.cos(w), a = Math.sin(w) / Math.SQRT2;
+    var a0 = 1 + a;
+    return [(1 + c) / 2 / a0, -(1 + c) / a0, (1 + c) / 2 / a0, -2 * c / a0, (1 - a) / a0];
+  }
+  function biquad(b, s, x) {
+    var y = b[0] * x + b[1] * s[0] + b[2] * s[1] - b[3] * s[2] - b[4] * s[3];
+    s[1] = s[0]; s[0] = x; s[3] = s[2]; s[2] = y;
+    return y;
+  }
+
+  // ------------------------------------------------------- pitch tracker
+  // YIN (de Cheveigné & Kawahara 2002) with the difference function computed
+  // by FFT, followed by a short median filter and voicing hysteresis.
+  //
+  // Feed it audio of any chunk size with push(); it analyses one frame every
+  // `hop` samples (10 ms) and returns the finished estimates. Each estimate's
+  // `t` is the time (s) of the audio it describes (centre of the analysis
+  // window); it becomes available `latency` seconds later.
+  function createTracker(opts) {
+    opts = opts || {};
+    var sr = opts.sampleRate || 48000;
+    var fmin = opts.fmin || 60, fmax = opts.fmax || 1100;
+    var N = 1; while (N < sr * 0.040) N *= 2;           // ~43 ms at 48 kHz
+    var hop = Math.round(sr * 0.010);
+    var tauMin = Math.max(2, Math.floor(sr / fmax));
+    var tauMax = Math.min(Math.ceil(sr / fmin), Math.floor(N / 2));
+    var W = N - tauMax;
+    var thresh = opts.yinThreshold || 0.2;
+    var aperMax = opts.aperMax || 0.35;
+    var smooth = opts.smooth !== false;
+    var octaveCheck = opts.octaveCheck !== false;
+    var octRatio = opts.octRatio || 0.1;
+    var fallbackSlack = opts.fallbackSlack == null ? 0.1 : opts.fallbackSlack;
+    var tanK = opts.tanK || 2.5;   // on a tanpura pitch, the voice must be this much louder than the bleed
+    var useRef = opts.useRef !== false;
+    var MED = smooth ? 5 : 1;
+    var sensitivity = opts.sensitivity == null ? 1 : opts.sensitivity;   // >1 = more sensitive
+    var absGate = opts.absGate || 0.0015;
+
+    var fft = makeFFT(N);
+    var re = new Float64Array(N), im = new Float64Array(N);
+    var re2 = new Float64Array(N), im2 = new Float64Array(N);
+    var d = new Float64Array(tauMax + 2), cm = new Float64Array(tauMax + 2);
+    var win = new Float32Array(N), refWin = new Float32Array(N);
+    var refLive = false, refHist = [], G = 0;
+    // the phone speaker reproduces little below ~300 Hz, so compare levels above that
+    var hpB = biquadHP(300, sr), hpS = [0, 0, 0, 0];
+    var gRise = opts.gRise || 1.0003;
+    var tanPCs = [];   // pitch classes (cents mod 1200) of the tanpura strings
+    var total = 0, sinceHop = 0;
+
+    // adaptive noise floor / level tracking
+    var floor = 0, peak = 0;
+    // median filter history
+    var hist = [];
+
+    function yin() {
+      var i, tau;
+      var e2 = 0;
+      for (i = 0; i < N; i++) e2 += win[i] * win[i];
+      var rms = Math.sqrt(e2 / N);
+      if (rms < 1e-6) return { f0: 0, aper: 1, rms: rms };
+
+      // cross-correlation r(tau) = sum_{j<W} x[j] x[j+tau] via FFT
+      for (i = 0; i < N; i++) { re[i] = win[i]; im[i] = 0; re2[i] = i < W ? win[i] : 0; im2[i] = 0; }
+      fft(re, im, false); fft(re2, im2, false);
+      for (i = 0; i < N; i++) {
+        // conj(A) * X
+        var ar = re2[i], ai = -im2[i];
+        var xr = re[i], xi = im[i];
+        re[i] = ar * xr - ai * xi; im[i] = ar * xi + ai * xr;
+      }
+      fft(re, im, true);
+      // energies e(tau) = sum_{j=tau}^{tau+W-1} x^2
+      var e0 = 0;
+      for (i = 0; i < W; i++) e0 += win[i] * win[i];
+      var et = e0;
+      d[0] = 0;
+      for (tau = 1; tau <= tauMax + 1 && tau + W <= N; tau++) {
+        et += win[tau + W - 1] * win[tau + W - 1] - win[tau - 1] * win[tau - 1];
+        d[tau] = Math.max(0, e0 + et - 2 * re[tau] / N);
+      }
+      var lastTau = Math.min(tauMax + 1, N - W);
+      // cumulative mean normalised difference
+      cm[0] = 1;
+      var run = 0;
+      for (tau = 1; tau <= lastTau; tau++) { run += d[tau]; cm[tau] = run > 0 ? d[tau] * tau / run : 1; }
+
+      var best = -1;
+      for (tau = tauMin; tau < lastTau; tau++) {
+        if (cm[tau] < thresh) {
+          while (tau + 1 < lastTau && cm[tau + 1] < cm[tau]) tau++;
+          best = tau; break;
+        }
+      }
+      if (best < 0) {
+        // No dip under the threshold (noisy, or another sound such as the
+        // tanpura mixed in). The global minimum is often a long lag where the
+        // mixture happens to repeat (an octave or more too low), so take the
+        // first dip that is nearly as deep as the global minimum.
+        var mv = Infinity;
+        for (tau = tauMin; tau < lastTau; tau++) if (cm[tau] < mv) { mv = cm[tau]; best = tau; }
+        if (fallbackSlack > 0) {
+          for (tau = tauMin + 1; tau < lastTau - 1; tau++) {
+            if (cm[tau] <= cm[tau - 1] && cm[tau] <= cm[tau + 1] && cm[tau] < mv + fallbackSlack) { best = tau; break; }
+          }
+        }
+      }
+      // Octave check: when the fundamental is weak (common on phone mics and
+      // on vowels like "e"), YIN's first dip can land on half the true period.
+      // If the dip at twice the lag is far deeper, the true period is there.
+      if (octaveCheck) {
+        for (var it = 0; it < 2; it++) {
+          var t2 = best * 2;
+          if (t2 + 3 >= lastTau) break;
+          var b2 = t2, v2 = cm[t2];
+          for (tau = t2 - 3; tau <= t2 + 3; tau++) if (cm[tau] < v2) { v2 = cm[tau]; b2 = tau; }
+          if (v2 < cm[best] * octRatio && cm[best] - v2 > 0.02) best = b2; else break;
+        }
+      }
+      var aper = cm[best];
+      // parabolic interpolation on d
+      var t0 = best;
+      if (best > 1 && best < lastTau) {
+        var a = d[best - 1], b = d[best], c = d[best + 1];
+        var den = a + c - 2 * b;
+        if (den > 0) t0 = best + 0.5 * (a - c) / den;
+      }
+      return { f0: sr / t0, aper: aper, rms: rms };
+    }
+
+    function analyse(tCentre) {
+      var y = yin();
+      // level tracking: floor follows quiet passages fast and rises slowly;
+      // it may never climb above 1/10 of the recent loud level.
+      if (floor === 0) floor = y.rms;
+      if (y.rms < floor) floor = 0.7 * floor + 0.3 * y.rms; else floor *= 1.0012;
+      peak = Math.max(y.rms, peak * 0.9995);
+      if (floor > peak * 0.1) floor = peak * 0.1;
+      var gate = Math.max(absGate, floor * 2.5);
+      // Tanpura bleed: we know exactly what the app is playing (the reference),
+      // so learn how loud it arrives at the mic (G = mic/ref level when the
+      // singer is quiet) and require the voice to stand clearly above it.
+      var bleed = 0;
+      if (useRef && refLive) {
+        var re2s = 0;
+        for (var q = 0; q < N; q++) re2s += refWin[q] * refWin[q];
+        refHist.push(Math.sqrt(re2s / N));
+        if (refHist.length > 8) refHist.shift();
+        var refMax = Math.max.apply(null, refHist);
+        if (refMax > 1e-5) {
+          var ratio = y.rms / refMax;
+          if (G === 0) G = ratio;
+          else if (ratio < G) G = 0.8 * G + 0.2 * ratio;
+          else if (ratio < 3 * G) G *= gRise;      // frozen while clearly singing
+          bleed = G * refMax;
+        }
+      } else { refHist = []; G = 0; }
+      gate = Math.max(gate, bleed) / sensitivity;
+      var voiced = y.rms > gate && y.aper < aperMax && y.f0 >= fmin && y.f0 <= fmax;
+      // Not clearly louder than the bleed and on a tanpura string's pitch?
+      // Then it is most likely the tanpura itself, not the singer.
+      if (voiced && bleed > 0 && y.rms * sensitivity < tanK * bleed && tanPCs.length) {
+        var pc = ((1200 * Math.log2(y.f0) % 1200) + 1200) % 1200;
+        for (var z = 0; z < tanPCs.length; z++) {
+          var dd = Math.abs(pc - tanPCs[z]); dd = Math.min(dd, 1200 - dd);
+          if (dd < 30) { voiced = false; break; }
+        }
+      }
+      var raw = { t: tCentre, f0: voiced ? y.f0 : 0, aper: y.aper, rms: y.rms, gate: gate };
+      if (!smooth) return raw;
+
+      hist.push(raw);
+      if (hist.length > MED) hist.shift();
+      if (hist.length < MED) return null;
+      var mid = hist[(MED - 1) >> 1];
+      var vc = [];
+      for (var i = 0; i < hist.length; i++) if (hist[i].f0 > 0) vc.push(1200 * Math.log2(hist[i].f0));
+      var out = { t: mid.t, f0: 0, aper: mid.aper, rms: mid.rms, gate: mid.gate };
+      // voiced if the majority of the window is voiced and either the centre
+      // frame is voiced or it sits in a 1-frame gap between voiced frames
+      if (vc.length * 2 > MED && (mid.f0 > 0 || vc.length >= MED - 1)) {
+        vc.sort(function (p, q) { return p - q; });
+        var med = vc.length % 2 ? vc[(vc.length - 1) >> 1] : 0.5 * (vc[vc.length / 2 - 1] + vc[vc.length / 2]);
+        // keep the centre frame's own value unless it is an outlier (e.g. octave jump)
+        var own = mid.f0 > 0 ? 1200 * Math.log2(mid.f0) : null;
+        var c = (own !== null && Math.abs(own - med) < 50) ? own : med;
+        out.f0 = Math.pow(2, c / 1200);
+      }
+      return out;
+    }
+
+    // samples: mic audio. ref (optional): the tanpura audio the app played over
+    // the same stretch of time, used to tell the drone apart from the voice.
+    function push(samples, ref) {
+      var out = [];
+      refLive = !!ref;
+      var i = 0, n = samples.length;
+      while (i < n) {
+        var m = Math.min(hop - sinceHop, n - i);
+        win.copyWithin(0, m);
+        win.set(samples.subarray ? samples.subarray(i, i + m) : samples.slice(i, i + m), N - m);
+        refWin.copyWithin(0, m);
+        if (ref) { for (var r0 = 0; r0 < m; r0++) refWin[N - m + r0] = biquad(hpB, hpS, ref[i + r0]); }
+        else refWin.fill(0, N - m);
+        i += m; sinceHop += m; total += m;
+        if (sinceHop === hop) {
+          sinceHop = 0;
+          if (total >= N) {
+            var r = analyse((total - N / 2) / sr);
+            if (r) out.push(r);
+          }
+        }
+      }
+      return out;
+    }
+
+    function reset() { win.fill(0); refWin.fill(0); refHist = []; G = 0; total = 0; sinceHop = 0; floor = 0; peak = 0; hist = []; }
+
+    return {
+      push: push, reset: reset,
+      setSensitivity: function (s) { sensitivity = s; },
+      // tell the tracker which pitches the tanpura is playing (Hz list, or [])
+      setTanpura: function (hzList) {
+        tanPCs = (hzList || []).map(function (h) { return ((1200 * Math.log2(h) % 1200) + 1200) % 1200; });
+      },
+      frameSize: N, hop: hop, sampleRate: sr,
+      latency: (N / 2 + (smooth ? ((MED - 1) >> 1) * hop : 0)) / sr
+    };
+  }
+
+  // ------------------------------------------------------------- raags
+  // Steps are semitones from Sa: 0 = Sa, 12 = taar Sa, -1 = mandra Ni, etc.
+  var RAAGS = [
+    {
+      id: 'yaman', name: 'Yaman', thaat: 'Kalyan', time: 'Evening (first part of night)',
+      vadi: 'Ga', samvadi: 'Ni', tanpura: 'P',
+      note: "All shuddha swaras except tivra Ma. Aroha usually starts from mandra Ni, skipping Sa and Pa.",
+      aroha: [-1, 2, 4, 6, 9, 11, 12],
+      avaroha: [12, 11, 9, 7, 6, 4, 2, 0],
+      pakad: [-1, 2, 4, 2, -1, 2, 0, 7, 6, 4, 2, 0]
+    },
+    {
+      id: 'bhopali', name: 'Bhopali', thaat: 'Kalyan', time: 'Evening (first part of night)',
+      vadi: 'Ga', samvadi: 'Dha', tanpura: 'P',
+      note: 'Pentatonic (audav-audav): Ma and Ni are left out.',
+      aroha: [0, 2, 4, 7, 9, 12],
+      avaroha: [12, 9, 7, 4, 2, 0],
+      pakad: [4, 2, 0, -3, 0, 2, 4, 7, 4, 9, 7, 4, 2, 0]
+    },
+    {
+      id: 'bilawal', name: 'Bilawal', thaat: 'Bilawal', time: 'Morning',
+      vadi: 'Dha', samvadi: 'Ga', tanpura: 'P',
+      note: 'All shuddha swaras — the basic sargam scale.',
+      aroha: [0, 2, 4, 5, 7, 9, 11, 12],
+      avaroha: [12, 11, 9, 7, 5, 4, 2, 0],
+      pakad: [4, 2, 4, 7, 9, 11, 12]
+    },
+    {
+      id: 'durga', name: 'Durga', thaat: 'Bilawal', time: 'Night',
+      vadi: 'Ma', samvadi: 'Sa', tanpura: 'P',
+      note: 'Pentatonic: Ga and Ni are left out.',
+      aroha: [0, 2, 5, 7, 9, 12],
+      avaroha: [12, 9, 7, 5, 2, 0],
+      pakad: [2, 5, 7, 9, 5, 2, -3, 0]
+    },
+    {
+      id: 'bhairav', name: 'Bhairav', thaat: 'Bhairav', time: 'Early morning',
+      vadi: 'komal Dha', samvadi: 'komal Re', tanpura: 'P',
+      note: 'Komal Re and komal Dha; all other swaras shuddha.',
+      aroha: [0, 1, 4, 5, 7, 8, 11, 12],
+      avaroha: [12, 11, 8, 7, 5, 4, 1, 0],
+      pakad: [0, 4, 5, 8, 7, 4, 5, 1, 0]
+    },
+    {
+      id: 'kafi', name: 'Kafi', thaat: 'Kafi', time: 'Night',
+      vadi: 'Pa', samvadi: 'Sa', tanpura: 'P',
+      note: 'Komal Ga and komal Ni.',
+      aroha: [0, 2, 3, 5, 7, 9, 10, 12],
+      avaroha: [12, 10, 9, 7, 5, 3, 2, 0],
+      pakad: [0, 2, 3, 5, 7]
+    },
+    {
+      id: 'bhimpalasi', name: 'Bhimpalasi', thaat: 'Kafi', time: 'Afternoon',
+      vadi: 'Ma', samvadi: 'Sa', tanpura: 'M',
+      note: 'Komal Ga and komal Ni. Re and Dha are skipped going up.',
+      aroha: [-2, 0, 3, 5, 7, 10, 12],
+      avaroha: [12, 10, 9, 7, 5, 3, 2, 0],
+      pakad: [-2, 0, 5, 3, 7, 5, 3, 2, 0]
+    },
+    {
+      id: 'malkauns', name: 'Malkauns', thaat: 'Bhairavi', time: 'Late night',
+      vadi: 'Ma', samvadi: 'Sa', tanpura: 'M',
+      note: 'Pentatonic: komal Ga, komal Dha, komal Ni; Re and Pa are left out.',
+      aroha: [-2, 0, 3, 5, 8, 10, 12],
+      avaroha: [12, 10, 8, 5, 3, 0],
+      pakad: [5, 3, 5, 8, 10, 8, 5, 3, 5, 3, 0]
+    },
+    {
+      id: 'desh', name: 'Desh', thaat: 'Khamaj', time: 'Night',
+      vadi: 'Re', samvadi: 'Pa', tanpura: 'P',
+      note: 'Shuddha Ni going up, komal Ni coming down.',
+      aroha: [0, 2, 5, 7, 11, 12],
+      avaroha: [12, 10, 9, 7, 5, 4, 2, 0],
+      pakad: [2, 5, 7, 10, 9, 7, 9, 5, 4, 2, 4, -1, 0]
+    }
+  ];
+
+  function raagAllowed(raag) {
+    var a = [];
+    for (var i = 0; i < 12; i++) a.push(false);
+    if (!raag) { for (i = 0; i < 12; i++) a[i] = true; return a; }
+    raag.aroha.concat(raag.avaroha, raag.pakad).forEach(function (s) { a[((s % 12) + 12) % 12] = true; });
+    return a;
+  }
+
+  function collapseRepeats(seq) {
+    var out = [];
+    for (var i = 0; i < seq.length; i++) if (!out.length || out[out.length - 1] !== seq[i]) out.push(seq[i]);
+    return out;
+  }
+
+  // Practice sequences for a raag
+  var EXERCISES = [
+    { id: 'sa', name: 'Sa – Pa – Sa (warm-up)' },
+    { id: 'aroha', name: 'Aroha (going up)' },
+    { id: 'avaroha', name: 'Avaroha (coming down)' },
+    { id: 'both', name: 'Aroha + Avaroha' },
+    { id: 'pakad', name: 'Pakad (catch phrase)' },
+    { id: 'alankar', name: 'Alankar (groups of 3)' }
+  ];
+
+  function exerciseSequence(raag, exId) {
+    var up = raag.aroha, down = raag.avaroha;
+    var seq;
+    switch (exId) {
+      case 'sa': seq = [0, 7, 12, 7, 0]; break;
+      case 'aroha': seq = up.slice(); break;
+      case 'avaroha': seq = down.slice(); break;
+      case 'both': seq = up.concat(down[0] === up[up.length - 1] ? down.slice(1) : down); break;
+      case 'pakad': seq = raag.pakad.slice(); break;
+      case 'alankar':
+        seq = [];
+        for (var i = 0; i + 2 < up.length; i++) seq.push(up[i], up[i + 1], up[i + 2]);
+        for (i = 0; i + 2 < down.length; i++) seq.push(down[i], down[i + 1], down[i + 2]);
+        break;
+      default: seq = up.slice();
+    }
+    // a repeated consecutive note is sung as one held note
+    return collapseRepeats(seq);
+  }
+
+  // --------------------------------------------------------- note judge
+  // Follows a singer through a sequence of steps. Feed it the pitch track
+  // (t seconds, cents above Sa or null when silent). A note is complete
+  // when the voice stays within `tolerance` cents of the target for `hold`
+  // seconds (brief excursions shorter than `grace` are forgiven, so vibrato
+  // and small wobbles don't reset the count).
+  function createJudge(o) {
+    var seq = o.sequence, tuning = o.tuning || 'just';
+    var tol = o.tolerance || 25, hold = o.hold || 1.0, grace = o.grace == null ? 0.12 : o.grace;
+    var idx = 0, results = [];
+    var noteStart = null, inSince = null, lastIn = null, devs = [], firstHit = null, wrongOct = false;
+
+    function target() { return stepCents(seq[idx], tuning); }
+
+    function feed(t, cents) {
+      if (idx >= seq.length) return state(t);
+      if (noteStart === null) noteStart = t;
+      var T = target();
+      var inside = cents != null && Math.abs(cents - T) <= tol;
+      wrongOct = cents != null && !inside &&
+        (Math.abs(cents - T - 1200) <= tol || Math.abs(cents - T + 1200) <= tol);
+      if (inside) {
+        if (inSince === null) { inSince = t; devs = []; }
+        if (firstHit === null) firstHit = t;
+        lastIn = t;
+        devs.push(cents - T);
+        if (t - inSince >= hold) {
+          var m = 0, s = 0;
+          for (var i = 0; i < devs.length; i++) m += devs[i];
+          m /= devs.length;
+          for (i = 0; i < devs.length; i++) s += (devs[i] - m) * (devs[i] - m);
+          s = Math.sqrt(s / devs.length);
+          results.push({ step: seq[idx], target: T, meanDev: m, steadiness: s, timeToHit: firstHit - noteStart, skipped: false });
+          idx++; noteStart = t; inSince = null; lastIn = null; firstHit = null; devs = [];
+        }
+      } else if (inSince !== null && t - lastIn > grace) {
+        inSince = null; devs = [];
+      }
+      return state(t);
+    }
+
+    function skip(t) {
+      if (idx >= seq.length) return;
+      results.push({ step: seq[idx], target: target(), meanDev: null, steadiness: null, timeToHit: null, skipped: true });
+      idx++; noteStart = t; inSince = null; lastIn = null; firstHit = null; devs = [];
+    }
+
+    function state(t) {
+      return {
+        index: idx, done: idx >= seq.length,
+        target: idx < seq.length ? target() : null,
+        progress: inSince !== null ? Math.min(1, (t - inSince) / hold) : 0,
+        wrongOctave: wrongOct, results: results
+      };
+    }
+
+    return { feed: feed, skip: skip, state: state };
+  }
+
+  // ------------------------------------------------------ tanpura synth
+  // Renders one tanpura string pluck as a mono Float32Array.
+  // Additive synthesis with a bright formant that sweeps up the harmonic
+  // series as the note rings — an approximation of the jawari "buzz".
+  function renderTanpuraString(sr, f0, dur, seed) {
+    var n = Math.floor(sr * dur);
+    var out = new Float32Array(n);
+    var rnd = mulberry32(seed || 1);
+    var maxF = Math.min(sr * 0.45, 7000);
+    var K = Math.min(60, Math.floor(maxF / f0));
+    var CR = 64; // control rate (samples) for envelopes
+    var partials = [];
+    for (var k = 1; k <= K; k++) {
+      for (var p = 0; p < 2; p++) {
+        var f = k * f0 * (1 + 3e-6 * k * k) * (p ? 1.0007 + 0.0004 * rnd() : 1);
+        if (f >= maxF) continue;
+        var w = 2 * Math.PI * f / sr, ph = rnd() * 2 * Math.PI;
+        partials.push({ k: k, amp: (p ? 0.55 : 1) / Math.pow(k, 0.85), tau: 3.6 / (1 + 0.045 * k),
+          cr: Math.cos(w), ci: Math.sin(w), zr: Math.cos(ph), zi: Math.sin(ph) });
+      }
+    }
+    for (var s0 = 0; s0 < n; s0 += CR) {
+      var t = s0 / sr;
+      var centre = 3 + 24 * (1 - Math.exp(-t / 1.4));          // jawari sweep
+      var att = t < 0.012 ? 0.5 - 0.5 * Math.cos(Math.PI * t / 0.012) : 1;
+      var end = Math.min(n, s0 + CR);
+      for (var q = 0; q < partials.length; q++) {
+        var P = partials[q];
+        var bump = Math.exp(-0.5 * Math.pow((P.k - centre) / 3.5, 2));
+        var g = att * P.amp * Math.exp(-t / P.tau) * (1 + 2.6 * bump);
+        var zr = P.zr, zi = P.zi, cr = P.cr, ci = P.ci;
+        for (var s = s0; s < end; s++) {
+          out[s] += g * zi;
+          var nr = zr * cr - zi * ci; zi = zr * ci + zi * cr; zr = nr;
+        }
+        // renormalise oscillator to avoid drift
+        var mag = Math.sqrt(zr * zr + zi * zi); P.zr = zr / mag; P.zi = zi / mag;
+      }
+    }
+    // gentle fade-out at the end of the buffer
+    var fade = Math.floor(sr * 0.3);
+    for (var i = 0; i < fade && i < n; i++) out[n - 1 - i] *= i / fade;
+    var pk = 0;
+    for (i = 0; i < n; i++) pk = Math.max(pk, Math.abs(out[i]));
+    if (pk > 0) for (i = 0; i < n; i++) out[i] *= 0.9 / pk;
+    return out;
+  }
+
+  // Tanpura string set for a Sa frequency. first = 'P' | 'M' | 'N' | 'S'
+  function tanpuraStrings(saHz, first) {
+    var ratio = { P: 3 / 4, M: 2 / 3, N: 15 / 16, S: 1 }[first || 'P'] || 3 / 4;
+    return [
+      { name: first || 'P', hz: saHz * ratio },
+      { name: 'Sa', hz: saHz },
+      { name: 'Sa', hz: saHz },
+      { name: 'Sa (low)', hz: saHz / 2 }
+    ];
+  }
+  // pluck times as fractions of one cycle
+  var TANPURA_PATTERN = [0, 0.3, 0.5, 0.7];
+
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  return {
+    SWARA: SWARA, TUNING: TUNING, NOTE_NAMES: NOTE_NAMES, RAAGS: RAAGS, EXERCISES: EXERCISES,
+    TANPURA_PATTERN: TANPURA_PATTERN,
+    noteFreq: noteFreq, stepCents: stepCents, nearestSwara: nearestSwara,
+    createTracker: createTracker, raagAllowed: raagAllowed, exerciseSequence: exerciseSequence,
+    createJudge: createJudge, renderTanpuraString: renderTanpuraString, tanpuraStrings: tanpuraStrings
+  };
+})();
+// === RIYAAZ CORE END ===
+</script>
+<script>
+(function () {
+  'use strict';
+  var C = RiyaazCore;
+  var $ = function (s) { return document.querySelector(s); };
+  var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+  // ------------------------------------------------------------ settings
+  function load(k, d) { try { var v = localStorage.getItem('riyaaz.' + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
+  function store(k, v) { try { localStorage.setItem('riyaaz.' + k, JSON.stringify(v)); } catch (e) {} }
+  var S = Object.assign({
+    note: 0, octave: 3, fine: 0, tuning: 'just', raag: 'yaman', tab: 'live',
+    tanFirst: 'auto', tanVol: 0.6, tanCycle: 4.4, tolerance: 25, hold: 1, playRef: true,
+    exercise: 'aroha', sensitivity: 1, echo: false
+  }, load('settings', {}));
+  function save() { store('settings', S); }
+
+  function saHz() { return C.noteFreq(S.note, S.octave) * Math.pow(2, S.fine / 1200); }
+  function raag() { for (var i = 0; i < C.RAAGS.length; i++) if (C.RAAGS[i].id === S.raag) return C.RAAGS[i]; return null; }
+  function practiceRaag() { return raag() || C.RAAGS[2]; } // Bilawal (all shuddha) when "all swaras"
+  var allowed = C.raagAllowed(raag());
+
+  // ------------------------------------------------------------ notation
+  function parts(step) { var o = Math.floor(step / 12), d = step - o * 12, s = C.SWARA[d]; return { name: s.name, komal: s.komal, tivra: s.tivra, oct: o, deg: d }; }
+  function swHTML(step) {
+    var p = parts(step), c = 'sw';
+    if (p.komal) c += ' komal'; if (p.tivra) c += ' tivra';
+    if (p.oct < 0) c += ' mandra'; if (p.oct > 0) c += ' taar';
+    return '<span class="' + c + '">' + p.name + '</span>';
+  }
+  function swText(step) {
+    var p = parts(step);
+    return (p.komal ? 'komal ' : '') + (p.tivra ? 'tivra ' : '') + p.name +
+      (p.oct < 0 ? ' (lower octave)' : p.oct > 0 ? ' (upper octave)' : '');
+  }
+  function westName(f) {
+    var m = Math.round(69 + 12 * Math.log2(f / 440));
+    return C.NOTE_NAMES[((m % 12) + 12) % 12] + (Math.floor(m / 12) - 1);
+  }
+  function fmtC(c) { var r = Math.round(c); return (r > 0 ? '+' : r < 0 ? '−' : '±') + Math.abs(r) + '¢'; }
+  function devColor(a) { return a <= 10 ? '#4ade80' : a <= 25 ? '#fbbf24' : '#f87171'; }
+
+  // ------------------------------------------------------------ audio
+  var A = { ctx: null, stream: null, src: null, merger: null, tap: null, sink: null, tracker: null, running: false, wake: null, workletOK: null };
+
+  var WORKLET = "class Tap extends AudioWorkletProcessor{constructor(){super();this.n=0;this.m=new Float32Array(512);this.r=new Float32Array(512)}" +
+    "process(inputs){var x=inputs[0];if(!x||!x.length)return true;var a=x[0],b=x[1];for(var i=0;i<a.length;i++){this.m[this.n]=a[i];this.r[this.n]=b?b[i]:0;" +
+    "if(++this.n===512){this.port.postMessage({m:this.m,r:this.r},[this.m.buffer,this.r.buffer]);this.m=new Float32Array(512);this.r=new Float32Array(512);this.n=0}}return true}}" +
+    "registerProcessor('riyaaz-tap',Tap);";
+
+  function makeIR(ctx) {
+    var len = Math.floor(ctx.sampleRate * 1.6), b = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (var ch = 0; ch < 2; ch++) {
+      var d = b.getChannelData(ch);
+      for (var i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3) * 0.5;
+    }
+    return b;
+  }
+
+  function ensureCtx() {
+    if (!A.ctx) {
+      try { if (navigator.audioSession) navigator.audioSession.type = 'play-and-record'; } catch (e) {}
+      var AC = window.AudioContext || window.webkitAudioContext;
+      A.ctx = new AC({ latencyHint: 'interactive' });
+      var ctx = A.ctx;
+      A.merger = ctx.createChannelMerger(2);           // ch0 = mic, ch1 = what the tanpura plays
+      A.sink = ctx.createGain(); A.sink.gain.value = 0; A.sink.connect(ctx.destination);
+      A.tanBus = ctx.createGain();
+      A.tanVol = ctx.createGain(); A.tanVol.gain.value = S.tanVol;
+      var rev = ctx.createConvolver(); rev.buffer = makeIR(ctx);
+      var wet = ctx.createGain(); wet.gain.value = 0.3;
+      A.tanBus.connect(A.tanVol); A.tanBus.connect(rev); rev.connect(wet); wet.connect(A.tanVol);
+      A.tanVol.connect(ctx.destination);
+      A.tanVol.connect(A.merger, 0, 1);
+      A.toneBus = ctx.createGain(); A.toneBus.gain.value = 0.5; A.toneBus.connect(ctx.destination);
+      ctx.onstatechange = updateHint;
+    }
+    return A.ctx.state === 'running' ? Promise.resolve() : A.ctx.resume();
+  }
+
+  function createTap() {
+    var ctx = A.ctx;
+    function viaScript() {
+      var sp = ctx.createScriptProcessor(1024, 2, 1);
+      sp.channelCountMode = 'explicit'; sp.channelInterpretation = 'discrete';
+      sp.onaudioprocess = function (e) {
+        onAudio(new Float32Array(e.inputBuffer.getChannelData(0)), new Float32Array(e.inputBuffer.getChannelData(1)));
+      };
+      return Promise.resolve(sp);
+    }
+    var p;
+    if (ctx.audioWorklet && A.workletOK !== false) {
+      p = (A.workletOK ? Promise.resolve() :
+        ctx.audioWorklet.addModule(URL.createObjectURL(new Blob([WORKLET], { type: 'application/javascript' }))))
+        .then(function () {
+          A.workletOK = true;
+          var n = new AudioWorkletNode(ctx, 'riyaaz-tap', { numberOfInputs: 1, numberOfOutputs: 1, outputChannelCount: [1],
+            channelCount: 2, channelCountMode: 'explicit', channelInterpretation: 'discrete' });
+          n.port.onmessage = function (e) { onAudio(e.data.m, e.data.r); };
+          return n;
+        })
+        .catch(function () { A.workletOK = false; return viaScript(); });
+    } else p = viaScript();
+    return p.then(function (node) { A.tap = node; A.merger.connect(node); node.connect(A.sink); });
+  }
+
+  function startMic() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      toast('This browser cannot use the microphone. Open the app from Safari or Chrome over https.');
+      return Promise.reject(new Error('no getUserMedia'));
+    }
+    return ensureCtx().then(function () {
+      return navigator.mediaDevices.getUserMedia({ audio: {
+        echoCancellation: !!S.echo, noiseSuppression: false, autoGainControl: false, channelCount: 1 } });
+    }).then(function (stream) {
+      A.stream = stream;
+      A.src = A.ctx.createMediaStreamSource(stream);
+      A.src.connect(A.merger, 0, 0);
+      A.tracker = C.createTracker({ sampleRate: A.ctx.sampleRate, sensitivity: S.sensitivity });
+      trackerTanpura();
+      return createTap();
+    }).then(function () {
+      A.running = true; resetHistory(); keepAwake(true); updateUI();
+    }).catch(function (e) {
+      if (e && e.name === 'NotAllowedError') toast('Microphone permission was refused. Allow it in your browser settings for this site.');
+      else if (e && e.message !== 'no getUserMedia') toast('Could not start the microphone: ' + (e && e.message || e));
+      throw e;
+    });
+  }
+
+  function stopMic() {
+    if (A.stream) A.stream.getTracks().forEach(function (t) { t.stop(); });
+    try { A.src && A.src.disconnect(); } catch (e) {}
+    try { A.tap && A.tap.disconnect(); A.merger && A.merger.disconnect(A.tap); } catch (e) {}
+    if (A.tap && A.tap.port) A.tap.port.onmessage = null;
+    if (A.tap) A.tap.onaudioprocess = null;
+    A.stream = A.src = A.tap = null; A.running = false;
+    if (!T.on) keepAwake(false);
+    updateUI();
+  }
+
+  function keepAwake(on) {
+    if (!('wakeLock' in navigator)) return;
+    if (on && !A.wake) navigator.wakeLock.request('screen').then(function (w) { A.wake = w; w.addEventListener('release', function () { A.wake = null; }); }).catch(function () {});
+    if (!on && A.wake) { A.wake.release(); A.wake = null; }
+  }
+
+  // ------------------------------------------------------------ tanpura
+  var T = { on: false, bufs: null, key: '', strings: null, nextTime: 0, beat: 0, timer: null, live: [], busy: false };
+  function tanFirst() { if (S.tanFirst !== 'auto') return S.tanFirst; var r = raag(); return r ? r.tanpura : 'P'; }
+  function nextTick() { return new Promise(function (r) { setTimeout(r, 0); }); }
+
+  function prepareTanpura() {
+    var key = saHz().toFixed(3) + '|' + tanFirst() + '|' + A.ctx.sampleRate;
+    if (T.key === key && T.bufs) return Promise.resolve();
+    var strings = C.tanpuraStrings(saHz(), tanFirst()), sr = A.ctx.sampleRate, bufs = [];
+    T.busy = true; updateUI();
+    var p = Promise.resolve();
+    [0, 1, 3].forEach(function (i) {
+      p = p.then(nextTick).then(function () {
+        var data = C.renderTanpuraString(sr, strings[i].hz, 4.6, 11 + i);
+        var b = A.ctx.createBuffer(1, data.length, sr);
+        b.getChannelData(0).set(data);
+        bufs[i] = b;
+      });
+    });
+    return p.then(function () { bufs[2] = bufs[1]; T.bufs = bufs; T.key = key; T.strings = strings; T.busy = false; });
+  }
+
+  function startTanpura() {
+    return ensureCtx().then(prepareTanpura).then(function () {
+      A.tanVol.gain.cancelScheduledValues(A.ctx.currentTime);
+      A.tanVol.gain.setValueAtTime(S.tanVol, A.ctx.currentTime);
+      T.on = true; T.beat = 0; T.nextTime = A.ctx.currentTime + 0.12;
+      clearInterval(T.timer); T.timer = setInterval(scheduleTanpura, 50); scheduleTanpura();
+      trackerTanpura(); keepAwake(true); updateUI();
+    }).catch(function (e) { T.busy = false; updateUI(); toast('Tanpura could not start: ' + (e && e.message || e)); });
+  }
+
+  function scheduleTanpura() {
+    if (!T.on) return;
+    var pat = C.TANPURA_PATTERN, ahead = A.ctx.currentTime + 0.3;
+    if (T.nextTime < A.ctx.currentTime - 0.5) T.nextTime = A.ctx.currentTime + 0.05; // woke from background
+    while (T.nextTime < ahead) {
+      pluck(T.beat, T.nextTime);
+      var cur = pat[T.beat], nxt = T.beat + 1 < pat.length ? pat[T.beat + 1] : 1;
+      T.nextTime += (nxt - cur) * S.tanCycle;
+      T.beat = (T.beat + 1) % pat.length;
+    }
+  }
+
+  function pluck(i, when) {
+    var ctx = A.ctx, src = ctx.createBufferSource(), g = ctx.createGain();
+    src.buffer = T.bufs[i];
+    src.playbackRate.value = 1 + (i === 2 ? 0.0007 : 0) + (Math.random() - 0.5) * 0.0004;
+    g.gain.value = (i === 3 ? 0.8 : 0.6) * (0.85 + Math.random() * 0.15);
+    src.connect(g); g.connect(A.tanBus); src.start(when);
+    T.live.push(src);
+    src.onended = function () { g.disconnect(); var k = T.live.indexOf(src); if (k >= 0) T.live.splice(k, 1); };
+  }
+
+  function stopTanpura() {
+    T.on = false; clearInterval(T.timer);
+    if (A.ctx) {
+      var t = A.ctx.currentTime;
+      A.tanVol.gain.setTargetAtTime(0, t, 0.08);
+      T.live.forEach(function (s) { try { s.stop(t + 0.5); } catch (e) {} });
+      setTimeout(function () { if (!T.on) { A.tanVol.gain.cancelScheduledValues(0); A.tanVol.gain.value = S.tanVol; } }, 700);
+    }
+    trackerTanpura();
+    if (!A.running) keepAwake(false);
+    updateUI();
+  }
+
+  function restartTanpuraIfOn() { if (T.on) { stopTanpura(); setTimeout(startTanpura, 550); } }
+  function trackerTanpura() { if (A.tracker) A.tracker.setTanpura(T.on && T.strings ? T.strings.map(function (s) { return s.hz; }) : []); }
+
+  // reference tone (a soft harmonium-like reed)
+  var toneWave = null;
+  function playTone(step, dur) {
+    return ensureCtx().then(function () {
+      var ctx = A.ctx, t = ctx.currentTime + 0.03;
+      if (!toneWave) {
+        var n = 12, re = new Float32Array(n), im = new Float32Array(n);
+        var amps = [0, 1, 0.7, 0.45, 0.35, 0.22, 0.16, 0.1, 0.07, 0.05, 0.03, 0.02];
+        for (var k = 1; k < n; k++) im[k] = amps[k];
+        toneWave = ctx.createPeriodicWave(re, im);
+      }
+      var o = ctx.createOscillator(), g = ctx.createGain();
+      o.setPeriodicWave(toneWave);
+      o.frequency.value = saHz() * Math.pow(2, C.stepCents(step, S.tuning) / 1200);
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.35, t + 0.06);
+      g.gain.setValueAtTime(0.35, t + dur - 0.15); g.gain.linearRampToValueAtTime(0, t + dur);
+      o.connect(g); g.connect(A.toneBus); o.start(t); o.stop(t + dur + 0.05);
+      P.muteUntil = performance.now() + (dur + 0.45) * 1000;  // don't score the app's own tone
+    });
+  }
+
+  // ------------------------------------------------------------ pitch history
+  var H = { n: 1600, t: new Float64Array(1600), c: new Float32Array(1600), i: 0, len: 0, lastT: 0, lastWall: 0 };
+  var latest = { cents: null, f0: 0, t: 0 };
+  var needleC = 0;
+  function resetHistory() { H.i = 0; H.len = 0; latest = { cents: null, f0: 0, t: 0 }; }
+
+  function onAudio(m, r) {
+    if (!A.tracker) return;
+    var res = A.tracker.push(m, T.on ? r : null);
+    for (var k = 0; k < res.length; k++) onFrame(res[k]);
+  }
+
+  function onFrame(r) {
+    var cents = r.f0 > 0 ? 1200 * Math.log2(r.f0 / saHz()) : null;
+    H.t[H.i] = r.t; H.c[H.i] = cents == null ? NaN : cents;
+    H.i = (H.i + 1) % H.n; if (H.len < H.n) H.len++;
+    H.lastT = r.t; H.lastWall = performance.now();
+    latest = { cents: cents, f0: r.f0, t: r.t };
+    if (P.active && P.judge && performance.now() > P.muteUntil) {
+      var st = P.judge.feed(r.t, cents);
+      P.state = st;
+      if (st.index !== P.lastIndex) onAdvance(st);
+    }
+  }
+
+  // ------------------------------------------------------------ practice
+  var P = { active: false, seq: [], judge: null, state: null, lastIndex: 0, muteUntil: 0 };
+
+  function buildPractice() {
+    P.seq = C.exerciseSequence(practiceRaag(), S.exercise);
+    P.judge = null; P.state = null; P.lastIndex = 0; P.active = false;
+    renderChips(); $('#summary').hidden = true; updateUI();
+  }
+
+  function startPractice() {
+    var go = function () {
+      P.seq = C.exerciseSequence(practiceRaag(), S.exercise);
+      P.judge = C.createJudge({ sequence: P.seq, tuning: S.tuning, tolerance: S.tolerance, hold: S.hold });
+      P.state = P.judge.state(latest.t); P.lastIndex = 0; P.active = true;
+      $('#summary').hidden = true; renderChips(); updateUI();
+      if (S.playRef) playTone(P.seq[0], 1.1);
+    };
+    return A.running ? Promise.resolve(go()) : startMic().then(go);
+  }
+
+  function stopPractice() { P.active = false; updateUI(); }
+
+  function onAdvance(st) {
+    P.lastIndex = st.index;
+    renderChips();
+    if (st.done) { P.active = false; showSummary(st.results); updateUI(); return; }
+    if (S.playRef) setTimeout(function () { if (P.active) playTone(P.seq[st.index], 1.1); }, 250);
+    updateUI();
+  }
+
+  function renderChips() {
+    var res = P.state ? P.state.results : [];
+    var cur = P.active && P.state ? P.state.index : -1;
+    $('#chips').innerHTML = P.seq.map(function (s, i) {
+      var r = res[i], cls = 'nchip', sub = '';
+      if (r) {
+        if (r.skipped) { cls += ' skip'; sub = 'skip'; }
+        else { cls += Math.abs(r.meanDev) <= 10 ? ' good' : ' ok'; sub = fmtC(r.meanDev); }
+      } else if (i === cur) cls += ' cur';
+      return '<div class="' + cls + '">' + swHTML(s) + '<small>' + sub + '</small></div>';
+    }).join('');
+    var el = $('#chips').children[Math.max(0, cur)];
+    if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+  }
+
+  function showSummary(results) {
+    var sung = results.filter(function (r) { return !r.skipped; });
+    var inTune = sung.filter(function (r) { return Math.abs(r.meanDev) <= 10; }).length;
+    var avgAbs = sung.length ? sung.reduce(function (a, r) { return a + Math.abs(r.meanDev); }, 0) / sung.length : 0;
+    var avgSd = sung.length ? sung.reduce(function (a, r) { return a + r.steadiness; }, 0) / sung.length : 0;
+    var score = sung.length ? Math.round(100 * inTune / results.length) : 0;
+    var rows = results.map(function (r) {
+      if (r.skipped) return '<tr><td>' + swHTML(r.step) + '</td><td colspan="3" style="color:var(--faint)">skipped</td></tr>';
+      var a = Math.abs(r.meanDev);
+      return '<tr><td>' + swHTML(r.step) + '</td><td style="color:' + devColor(a) + '">' + fmtC(r.meanDev) + (a > 5 ? (r.meanDev > 0 ? ' sharp' : ' flat') : '') +
+        '</td><td>' + (r.steadiness < 6 ? 'steady' : r.steadiness < 12 ? 'slight wobble' : 'wobbly') + ' (' + r.steadiness.toFixed(0) + '¢)</td><td>' + r.timeToHit.toFixed(1) + ' s</td></tr>';
+    }).join('');
+    // tips: consistent tendencies per swara
+    var by = {};
+    sung.forEach(function (r) { var k = r.step; (by[k] = by[k] || []).push(r.meanDev); });
+    var tips = [];
+    Object.keys(by).forEach(function (k) {
+      var m = by[k].reduce(function (a, b) { return a + b; }, 0) / by[k].length;
+      if (Math.abs(m) > 10) tips.push('<li>' + swHTML(+k) + ' was ' + Math.round(Math.abs(m)) + '¢ ' + (m > 0 ? 'sharp — aim a little lower.' : 'flat — aim a little higher.') + '</li>');
+    });
+    var all = sung.map(function (r) { return r.meanDev; });
+    var mean = all.length ? all.reduce(function (a, b) { return a + b; }, 0) / all.length : 0;
+    if (Math.abs(mean) > 6 && tips.length > 1) tips.unshift('<li>Overall you lean ' + (mean > 0 ? 'sharp' : 'flat') + ' (' + fmtC(mean) + '). Check your Sa against the tanpura.</li>');
+    if (avgSd > 10) tips.push('<li>Notes wavered by about ' + avgSd.toFixed(0) + '¢. Try holding each swara longer with steady breath.</li>');
+    if (!tips.length && sung.length) tips.push('<li>Well done — every note within 10¢ on average. Try a tighter tolerance or a longer hold.</li>');
+    var r = practiceRaag(), ex = C.EXERCISES.filter(function (e) { return e.id === S.exercise; })[0];
+    $('#summary').innerHTML = '<h3>' + r.name + ' · ' + ex.name + '</h3>' +
+      '<div class="score">' + score + '%</div><div class="note">' + inTune + ' of ' + results.length + ' notes within 10¢' + (sung.length ? ' · average off by ' + avgAbs.toFixed(0) + '¢' : '') + '</div>' +
+      '<ul class="tips">' + tips.join('') + '</ul>' +
+      '<table><tr><th>Swara</th><th>Average</th><th>Steadiness</th><th>Time to find</th></tr>' + rows + '</table>' +
+      '<div style="display:flex;gap:8px;margin-top:14px"><button class="sec" id="againBtn">Again</button><button class="sec" id="closeSum">Close</button></div>';
+    $('#summary').hidden = false;
+    $('#againBtn').onclick = function () { startPractice(); };
+    $('#closeSum').onclick = function () { $('#summary').hidden = true; };
+    var hist = load('history', []);
+    hist.push({ at: Date.now(), raag: r.id, ex: S.exercise, score: score, avgAbs: +avgAbs.toFixed(1), sa: S.note + ':' + S.octave });
+    store('history', hist.slice(-200));
+  }
+
+  // ------------------------------------------------------------ drawing
+  var cv = $('#graph'), g2 = cv.getContext('2d'), view = { centre: 600, w: 0, h: 0, dpr: 1 };
+  function resize() {
+    var r = cv.getBoundingClientRect(), d = Math.min(3, window.devicePixelRatio || 1);
+    view.w = r.width; view.h = r.height; view.dpr = d;
+    cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d);
+  }
+  window.addEventListener('resize', resize);
+
+  function drawLabel(step, x, y, color, size) {
+    var p = parts(step);
+    g2.font = '600 ' + size + 'px -apple-system,system-ui,sans-serif';
+    g2.fillStyle = color; g2.textBaseline = 'middle';
+    g2.fillText(p.name, x, y);
+    var w = g2.measureText(p.name).width;
+    if (p.komal) g2.fillRect(x, y + size * 0.55, w, Math.max(1, size * 0.08));
+    if (p.tivra) g2.fillRect(x + size * 0.3, y - size * 0.85, Math.max(1.2, size * 0.08), size * 0.3);
+    var dots = Math.abs(p.oct);
+    for (var k = 0; k < dots; k++) {
+      g2.beginPath();
+      var dy = p.oct < 0 ? y + size * (p.komal ? 0.85 : 0.72) + k * size * 0.28 : y - size * 0.72 - k * size * 0.28;
+      g2.arc(x + w / 2 + (dots > 1 ? (k - 0.5) * size * 0.3 : 0), dy, Math.max(1.4, size * 0.09), 0, 6.283);
+      g2.fill();
+    }
+  }
+
+  function draw() {
+    requestAnimationFrame(draw);
+    if (document.hidden) return;
+    if (!view.w) resize();
+    var W = view.w, Hh = view.h, d = view.dpr;
+    g2.setTransform(d, 0, 0, d, 0, 0);
+    g2.clearRect(0, 0, W, Hh);
+
+    var target = P.active && P.state && !P.state.done ? P.state.target : null;
+    var aim = target != null ? target : latest.cents != null ? latest.cents : view.centre;
+    var pxPer100 = Math.max(24, Math.min(44, Hh / 15));
+    var span = Hh / pxPer100 * 100;
+    // follow the voice: move only when it nears the edges of the view
+    var lo = view.centre - span * 0.32, hi = view.centre + span * 0.32;
+    var want = aim < lo ? aim + span * 0.32 : aim > hi ? aim - span * 0.32 : view.centre;
+    if (target != null) want = target;
+    view.centre += (want - view.centre) * 0.08;
+    var yOf = function (c) { return Hh / 2 - (c - view.centre) / 100 * pxPer100; };
+    var cTop = view.centre + span / 2, cBot = view.centre - span / 2;
+
+    // swara grid
+    var tun = C.TUNING[S.tuning], labelX = 10;
+    for (var o = Math.floor(cBot / 1200) - 1; o <= Math.ceil(cTop / 1200); o++) {
+      for (var dg = 0; dg < 12; dg++) {
+        var c = o * 1200 + tun[dg]; if (c < cBot - 50 || c > cTop + 50) continue;
+        var y = Math.round(yOf(c)) + 0.5, inR = allowed[dg];
+        g2.strokeStyle = dg === 0 ? 'rgba(245,158,11,.55)' : inR ? 'rgba(244,237,229,.22)' : 'rgba(244,237,229,.07)';
+        g2.lineWidth = dg === 0 ? 1.5 : 1;
+        g2.setLineDash(inR || dg === 0 ? [] : [3, 5]);
+        g2.beginPath(); g2.moveTo(52, y); g2.lineTo(W, y); g2.stroke();
+        g2.setLineDash([]);
+        if (inR || pxPer100 > 30) drawLabel(o * 12 + dg, labelX, y, dg === 0 ? '#f59e0b' : inR ? '#d8cbbd' : '#5b5048', inR ? 14 : 11);
+      }
+    }
+
+    // practice target band
+    if (target != null) {
+      var yt = yOf(target), band = S.tolerance / 100 * pxPer100;
+      g2.fillStyle = 'rgba(74,222,128,.12)'; g2.fillRect(52, yt - band, W - 52, band * 2);
+      g2.strokeStyle = 'rgba(74,222,128,.7)'; g2.lineWidth = 2;
+      g2.beginPath(); g2.moveTo(52, yt); g2.lineTo(W, yt); g2.stroke();
+    }
+
+    // pitch trace
+    var now = H.lastT + (A.running ? Math.min(0.25, (performance.now() - H.lastWall) / 1000) : 0);
+    var secs = 6, pps = (W - 60) / secs, x0 = W - 16;
+    g2.lineWidth = 3; g2.lineCap = 'round'; g2.lineJoin = 'round';
+    var prev = null;
+    for (var k = 0; k < H.len; k++) {
+      var idx = (H.i - H.len + k + H.n) % H.n, tt = H.t[idx], cc = H.c[idx];
+      var x = x0 - (now - tt) * pps;
+      if (x < 52) { prev = null; continue; }
+      if (cc !== cc) { prev = null; continue; }          // NaN = silent
+      var ns = C.nearestSwara(cc, S.tuning, allowed).nearestAllowed;
+      var col = devColor(Math.abs(ns.dev));
+      var yy = yOf(cc);
+      if (prev && Math.abs(prev.c - cc) < 150) {
+        g2.strokeStyle = col; g2.beginPath(); g2.moveTo(prev.x, prev.y); g2.lineTo(x, yy); g2.stroke();
+      }
+      prev = { x: x, y: yy, c: cc };
+    }
+    if (latest.cents != null && A.running) {
+      g2.fillStyle = '#fff'; g2.beginPath(); g2.arc(x0, yOf(latest.cents), 5, 0, 6.283); g2.fill();
+    }
+    updateReadout();
+  }
+
+  // ------------------------------------------------------------ readouts
+  var lastShown = 0;
+  function updateReadout() {
+    var t = performance.now();
+    if (t - lastShown < 50) return; lastShown = t;
+    var big = $('#bigSwara'), cents = latest.cents;
+    var fresh = A.running && cents != null && t - H.lastWall < 300;
+    if (!fresh) {
+      big.className = 'quiet'; $('#needle').hidden = true; $('#centsTxt').innerHTML = '&nbsp;';
+      $('#varjitTxt').textContent = '';
+      if (!A.running) $('#noteTxt').innerHTML = '&nbsp;';
+    } else {
+      var ns = C.nearestSwara(cents, S.tuning, allowed);
+      needleC += (ns.dev - needleC) * 0.35;
+      big.className = ''; big.innerHTML = swHTML(ns.step);
+      big.style.color = devColor(Math.abs(ns.dev));
+      $('#centsTxt').textContent = fmtC(ns.dev) + (Math.abs(ns.dev) <= 5 ? ' in tune' : ns.dev > 0 ? ' sharp' : ' flat');
+      $('#centsTxt').style.color = devColor(Math.abs(ns.dev));
+      $('#needle').hidden = false; $('#needle').style.left = (50 + Math.max(-50, Math.min(50, needleC))) + '%';
+      $('#noteTxt').textContent = westName(latest.f0) + ' · ' + latest.f0.toFixed(1) + ' Hz';
+      var r = raag();
+      $('#varjitTxt').innerHTML = !ns.inRaag && r ? swHTML(ns.step) + ' is not used in ' + r.name : '';
+    }
+    if (P.active && P.state && !P.state.done) {
+      var st = P.state, tgt = st.target;
+      var arc = $('#ringArc'); arc.setAttribute('stroke-dashoffset', (226.2 * (1 - st.progress)).toFixed(1));
+      $('#tLabel').innerHTML = swHTML(P.seq[st.index]);
+      $('#tSing').textContent = 'Sing ' + swText(P.seq[st.index]) + ' · note ' + (st.index + 1) + ' of ' + P.seq.length;
+      if (fresh) {
+        var dv = cents - tgt;
+        $('#tDev').textContent = Math.abs(dv) > 600 ? '…' : fmtC(dv) + (Math.abs(dv) <= S.tolerance ? ' — hold it' : dv > 0 ? ' — too high' : ' — too low');
+        $('#tDev').style.color = devColor(Math.abs(dv) <= S.tolerance ? Math.min(10, Math.abs(dv)) : Math.abs(dv));
+        $('#tHint').textContent = st.wrongOctave ? (cents > tgt ? 'Right swara, one octave too high' : 'Right swara, one octave too low') : '';
+      } else { $('#tDev').innerHTML = '&nbsp;'; $('#tHint').textContent = performance.now() < P.muteUntil ? 'Listen…' : ''; }
+    } else if ($('#practiceTop').hidden === false) {
+      $('#ringArc').setAttribute('stroke-dashoffset', '226.2');
+      $('#tLabel').innerHTML = P.seq.length ? swHTML(P.seq[0]) : '–';
+      $('#tSing').textContent = P.seq.length + ' notes · press Start practice';
+      $('#tDev').innerHTML = '&nbsp;'; $('#tHint').textContent = '';
+    }
+  }
+
+  function updateHint() {
+    var h = $('#hint');
+    if (A.ctx && A.running && A.ctx.state !== 'running') h.textContent = 'Audio paused by the phone — tap Stop, then Start again.';
+    else if (!A.running) h.textContent = S.tab === 'live' ? 'Tap Start, then sing Sa and go up and down the scale.' : 'Choose an exercise, then Start practice.';
+    else h.textContent = latest.cents == null && H.len < 60 ? 'Listening… sing a note.' : '';
+  }
+
+  function updateUI() {
+    var live = S.tab === 'live';
+    $$('.seg button').forEach(function (b) { b.classList.toggle('on', b.dataset.tab === S.tab); });
+    $('#readout').hidden = !live; $('#practiceTop').hidden = live;
+    if (live) $('#summary').hidden = true;
+    var mic = $('#micBtn');
+    if (live) { mic.textContent = A.running ? 'Stop' : 'Start'; mic.classList.toggle('stop', A.running); }
+    else { mic.textContent = P.active ? 'Stop practice' : 'Start practice'; mic.classList.toggle('stop', P.active); }
+    $('#skipBtn').hidden = live || !P.active;
+    $('#restartBtn').hidden = live || !P.active;
+    var tb = $('#tanBtn');
+    tb.classList.toggle('on', T.on);
+    tb.textContent = T.busy ? 'Tuning…' : T.on ? 'Tanpura ■' : 'Tanpura ▶';
+    var nm = C.NOTE_NAMES[S.note] + S.octave;
+    $('#saLabel').textContent = nm + (S.fine ? (S.fine > 0 ? '+' : '') + S.fine + '¢' : '');
+    updateHint();
+  }
+
+  var toastTimer;
+  function toast(msg) {
+    var el = $('.toast');
+    if (!el) { el = document.createElement('div'); el.className = 'toast'; document.body.appendChild(el); }
+    el.textContent = msg; el.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.hidden = true; }, 4500);
+  }
+
+  // ------------------------------------------------------------ settings UI
+  function opts(sel, val, onPick) {
+    $$(sel + ' button').forEach(function (b) {
+      b.classList.toggle('on', String(b.dataset.v) === String(val));
+      b.onclick = function () { onPick(b.dataset.v); $$(sel + ' button').forEach(function (x) { x.classList.toggle('on', x === b); }); save(); updateUI(); };
+    });
+  }
+
+  function buildSettings() {
+    $('#noteGrid').innerHTML = C.NOTE_NAMES.map(function (n, i) { return '<button data-v="' + i + '">' + n + '</button>'; }).join('');
+    $('#octOpts').innerHTML = [2, 3, 4].map(function (o) { return '<button data-v="' + o + '">' + o + '</button>'; }).join('');
+    var saChanged = function () { $('#saHz').textContent = saHz().toFixed(1) + ' Hz'; restartTanpuraIfOn(); };
+    opts('#noteGrid', S.note, function (v) { S.note = +v; saChanged(); });
+    opts('#octOpts', S.octave, function (v) { S.octave = +v; saChanged(); });
+    opts('#tuneOpts', S.tuning, function (v) { S.tuning = v; if (P.active) startPractice(); });
+    opts('#firstOpts', S.tanFirst, function (v) { S.tanFirst = v; restartTanpuraIfOn(); });
+    opts('#tolOpts', S.tolerance, function (v) { S.tolerance = +v; if (P.active) startPractice(); });
+    opts('#holdOpts', S.hold, function (v) { S.hold = +v; if (P.active) startPractice(); });
+    var range = function (id, key, fmt, after) {
+      var el = $('#' + id), out = $('#' + id + 'Out');
+      el.value = S[key]; if (out) out.textContent = fmt(S[key]);
+      el.oninput = function () { S[key] = +el.value; if (out) out.textContent = fmt(S[key]); after && after(); };
+      el.onchange = function () { save(); updateUI(); if (key === 'fine') restartTanpuraIfOn(); };
+    };
+    range('fine', 'fine', function (v) { return (v > 0 ? '+' : '') + v + '¢'; }, function () { $('#saHz').textContent = saHz().toFixed(1) + ' Hz'; });
+    range('tanVol', 'tanVol', function (v) { return Math.round(v * 100) + '%'; }, function () { if (A.ctx && T.on) A.tanVol.gain.setTargetAtTime(S.tanVol, A.ctx.currentTime, 0.05); });
+    range('tanCycle', 'tanCycle', function (v) { return v.toFixed(1) + ' s'; });
+    range('sens', 'sensitivity', function (v) { return v.toFixed(2) + '×'; }, function () { if (A.tracker) A.tracker.setSensitivity(S.sensitivity); });
+    $('#playRef').checked = S.playRef; $('#playRef').onchange = function () { S.playRef = this.checked; save(); };
+    $('#echo').checked = S.echo; $('#echo').onchange = function () {
+      S.echo = this.checked; save();
+      if (A.running) { var wasP = P.active; P.active = false; stopMic(); startMic().then(function () { if (wasP) startPractice(); }); }
+    };
+    $('#hearSa').onclick = function () { playTone(0, 1.6); };
+    $('#saHz').textContent = saHz().toFixed(1) + ' Hz';
+  }
+
+  function buildRaagSelect() {
+    $('#raagSel').innerHTML = '<option value="">All swaras (no raag)</option>' +
+      C.RAAGS.map(function (r) { return '<option value="' + r.id + '">Raag ' + r.name + '</option>'; }).join('');
+    $('#raagSel').value = S.raag;
+    $('#raagSel').onchange = function () {
+      S.raag = this.value; allowed = C.raagAllowed(raag()); save();
+      if (S.tanFirst === 'auto') restartTanpuraIfOn();
+      buildPractice();
+    };
+    $('#exSel').innerHTML = C.EXERCISES.map(function (e) { return '<option value="' + e.id + '">' + e.name + '</option>'; }).join('');
+    $('#exSel').value = S.exercise;
+    $('#exSel').onchange = function () { S.exercise = this.value; save(); buildPractice(); };
+  }
+
+  function showInfo() {
+    var r = raag();
+    var seq = function (a) { return a.map(swHTML).join(' '); };
+    if (!r) {
+      $('#infoTitle').firstChild.textContent = 'All swaras ';
+      $('#infoBody').innerHTML = '<p class="note">No raag selected: all twelve swaras are shown on the graph. Practice uses Raag Bilawal (all shuddha swaras).</p>' +
+        '<div class="seq">' + seq([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) + '</div>';
+    } else {
+      $('#infoTitle').firstChild.textContent = 'Raag ' + r.name + ' ';
+      $('#infoBody').innerHTML = '<p class="note">' + r.note + '</p><dl>' +
+        '<dt>Thaat</dt><dd>' + r.thaat + '</dd><dt>Time</dt><dd>' + r.time + '</dd>' +
+        '<dt>Vadi</dt><dd>' + r.vadi + '</dd><dt>Samvadi</dt><dd>' + r.samvadi + '</dd></dl>' +
+        '<dl><dt>Aroha</dt><dd class="seq">' + seq(r.aroha) + '</dd><dt>Avaroha</dt><dd class="seq">' + seq(r.avaroha) +
+        '</dd><dt>Pakad</dt><dd class="seq">' + seq(r.pakad) + '</dd></dl>' +
+        '<button class="sec" id="playAroha">▶ Hear aroha &amp; avaroha</button>';
+      $('#playAroha').onclick = function () {
+        var s = C.exerciseSequence(r, 'both'), i = 0;
+        (function next() { if (i < s.length && !$('#infoScrim').hidden) { playTone(s[i++], 0.55); setTimeout(next, 600); } })();
+      };
+    }
+    $('#infoScrim').hidden = false;
+  }
+
+  // ------------------------------------------------------------ wiring
+  $$('.seg button').forEach(function (b) {
+    b.onclick = function () { S.tab = b.dataset.tab; save(); if (S.tab === 'live') stopPractice(); else buildPractice(); updateUI(); };
+  });
+  $('#micBtn').onclick = function () {
+    if (S.tab === 'live') { if (A.running) stopMic(); else startMic().catch(function () {}); }
+    else { if (P.active) stopPractice(); else startPractice().catch(function () {}); }
+  };
+  $('#skipBtn').onclick = function () { if (P.judge) { P.judge.skip(latest.t); P.state = P.judge.state(latest.t); onAdvance(P.state); } };
+  $('#restartBtn').onclick = function () { startPractice(); };
+  $('#hearBtn').onclick = function () { var i = P.active && P.state ? P.state.index : 0; if (P.seq[i] != null) playTone(P.seq[i], 1.2); };
+  $('#tanBtn').onclick = function () { if (T.busy) return; if (T.on) stopTanpura(); else startTanpura(); };
+  $('#setBtn').onclick = $('#saBtn').onclick = function () { $('#setScrim').hidden = false; };
+  $('#infoBtn').onclick = showInfo;
+  $$('.scrim').forEach(function (s) {
+    s.addEventListener('click', function (e) { if (e.target === s || e.target.hasAttribute('data-close')) s.hidden = true; });
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && (A.running || T.on)) { keepAwake(true); if (A.ctx && A.ctx.state !== 'running') A.ctx.resume().catch(function () {}); }
+  });
+
+  buildSettings(); buildRaagSelect(); buildPractice(); updateUI(); resize();
+  requestAnimationFrame(draw);
+  setInterval(updateHint, 500);
+
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname))) navigator.serviceWorker.register('sw.js').catch(function () {});
+
+  // for debugging in the console
+  window.riyaaz = { S: S, A: A, T: T, P: P, H: H };
+})();
+</script>
+</body>
+</html>
