@@ -196,6 +196,7 @@ footer{display:flex;gap:10px;align-items:center;justify-content:center;padding:1
 
 <footer>
   <button id="micBtn" class="big">Start</button>
+  <button id="listenBtn" class="sec" hidden>▶ Listen</button>
   <button id="skipBtn" class="sec" hidden>Skip</button>
   <button id="restartBtn" class="sec" hidden>Restart</button>
 </footer>
@@ -234,6 +235,9 @@ footer{display:flex;gap:10px;align-items:center;justify-content:center;padding:1
       <button data-v="0.5">0.5 s</button><button data-v="1">1 s</button><button data-v="2">2 s</button><button data-v="3">3 s</button>
     </div></div>
     <label class="toggle"><input type="checkbox" id="playRef"> Play each note before I sing it</label>
+    <div class="row"><label>Listen speed</label><div class="opts" id="speedOpts">
+      <button data-v="1.6">Slow</button><button data-v="1.1">Medium</button><button data-v="0.7">Fast</button>
+    </div></div>
 
     <h4>Microphone</h4>
     <div class="row"><label>Sensitivity</label><input type="range" id="sens" min="0.4" max="2.5" step="0.05"><output id="sensOut"></output></div>
@@ -869,7 +873,7 @@ var RiyaazCore = (function () {
   var S = Object.assign({
     note: 0, octave: 3, fine: 0, tuning: 'just', raag: 'yaman', tab: 'live',
     tanFirst: 'auto', tanVol: 0.6, tanCycle: 4.4, tolerance: 25, hold: 1, playRef: true,
-    exercise: 'aroha', sensitivity: 1, echo: false
+    exercise: 'aroha', sensitivity: 1, echo: false, listenStep: 1.1
   }, load('settings', {}));
   function save() { store('settings', S); }
 
@@ -1075,23 +1079,73 @@ var RiyaazCore = (function () {
 
   // reference tone (a soft harmonium-like reed)
   var toneWave = null;
+  // schedule one reference note at ctx time `t`; returns a handle to cut it short
+  function toneAt(step, t, dur) {
+    var ctx = A.ctx;
+    if (!toneWave) {
+      var n = 12, re = new Float32Array(n), im = new Float32Array(n);
+      var amps = [0, 1, 0.7, 0.45, 0.35, 0.22, 0.16, 0.1, 0.07, 0.05, 0.03, 0.02];
+      for (var k = 1; k < n; k++) im[k] = amps[k];
+      toneWave = ctx.createPeriodicWave(re, im);
+    }
+    var o = ctx.createOscillator(), g = ctx.createGain();
+    o.setPeriodicWave(toneWave);
+    o.frequency.value = saHz() * Math.pow(2, C.stepCents(step, S.tuning) / 1200);
+    var rel = Math.min(0.15, dur * 0.25);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.35, t + 0.05);
+    g.gain.setValueAtTime(0.35, t + dur - rel); g.gain.linearRampToValueAtTime(0, t + dur);
+    o.connect(g); g.connect(A.toneBus); o.start(t); o.stop(t + dur + 0.05);
+    return { o: o, g: g };
+  }
+
   function playTone(step, dur) {
     return ensureCtx().then(function () {
-      var ctx = A.ctx, t = ctx.currentTime + 0.03;
-      if (!toneWave) {
-        var n = 12, re = new Float32Array(n), im = new Float32Array(n);
-        var amps = [0, 1, 0.7, 0.45, 0.35, 0.22, 0.16, 0.1, 0.07, 0.05, 0.03, 0.02];
-        for (var k = 1; k < n; k++) im[k] = amps[k];
-        toneWave = ctx.createPeriodicWave(re, im);
-      }
-      var o = ctx.createOscillator(), g = ctx.createGain();
-      o.setPeriodicWave(toneWave);
-      o.frequency.value = saHz() * Math.pow(2, C.stepCents(step, S.tuning) / 1200);
-      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.35, t + 0.06);
-      g.gain.setValueAtTime(0.35, t + dur - 0.15); g.gain.linearRampToValueAtTime(0, t + dur);
-      o.connect(g); g.connect(A.toneBus); o.start(t); o.stop(t + dur + 0.05);
+      toneAt(step, A.ctx.currentTime + 0.03, dur);
       P.muteUntil = performance.now() + (dur + 0.45) * 1000;  // don't score the app's own tone
     });
+  }
+
+  // ------------------------------------------------------------ listen to a whole exercise
+  // Plays the selected exercise note by note over the tanpura, highlighting each chip.
+  var L = { on: false, idx: -1, seq: [], voices: [], timers: [], ownTanpura: false };
+
+  function startListen() {
+    stopPractice();
+    $('#summary').hidden = true;
+    L.seq = C.exerciseSequence(practiceRaag(), S.exercise);
+    L.on = true; L.idx = -1; L.ownTanpura = false;
+    renderChips(); updateUI();
+    var hadTanpura = T.on;
+    (hadTanpura ? ensureCtx() : startTanpura()).then(function () {
+      if (!L.on) { if (!hadTanpura && T.on) stopTanpura(); return; }
+      L.ownTanpura = !hadTanpura && T.on;
+      var ctx = A.ctx, step = S.listenStep, n = L.seq.length;
+      // let the tanpura settle for one round of strings before the first note
+      var t0 = ctx.currentTime + (hadTanpura ? 0.4 : Math.min(2.5, S.tanCycle * 0.55));
+      L.seq.forEach(function (s, i) {
+        var t = t0 + i * step, last = i === n - 1;
+        L.voices.push(toneAt(s, t, last ? Math.max(1.6, step * 1.5) : step * 0.9));
+        L.timers.push(setTimeout(function () { L.idx = i; renderChips(); }, (t - ctx.currentTime) * 1000));
+      });
+      var end = t0 + (n - 1) * step + Math.max(1.6, step * 1.5);
+      L.timers.push(setTimeout(function () { stopListen(true); }, (end - ctx.currentTime) * 1000 + 200));
+    });
+  }
+
+  function stopListen(finished) {
+    if (!L.on) return;
+    L.on = false; L.idx = -1;
+    L.timers.forEach(clearTimeout); L.timers = [];
+    if (A.ctx) {
+      var now = A.ctx.currentTime;
+      L.voices.forEach(function (v) {
+        try { v.g.gain.cancelScheduledValues(now); v.g.gain.setTargetAtTime(0, now, 0.03); v.o.stop(now + 0.2); } catch (e) {}
+      });
+    }
+    L.voices = [];
+    // turn the tanpura off again only if Listen turned it on
+    if (L.ownTanpura) { L.ownTanpura = false; setTimeout(function () { if (!L.on && T.on) stopTanpura(); }, finished ? 1200 : 0); }
+    renderChips(); updateUI();
   }
 
   // ------------------------------------------------------------ pitch history
@@ -1123,12 +1177,14 @@ var RiyaazCore = (function () {
   var P = { active: false, seq: [], judge: null, state: null, lastIndex: 0, muteUntil: 0 };
 
   function buildPractice() {
+    stopListen();
     P.seq = C.exerciseSequence(practiceRaag(), S.exercise);
     P.judge = null; P.state = null; P.lastIndex = 0; P.active = false;
     renderChips(); $('#summary').hidden = true; updateUI();
   }
 
   function startPractice() {
+    stopListen();
     var go = function () {
       P.seq = C.exerciseSequence(practiceRaag(), S.exercise);
       P.judge = C.createJudge({ sequence: P.seq, tuning: S.tuning, tolerance: S.tolerance, hold: S.hold });
@@ -1150,9 +1206,10 @@ var RiyaazCore = (function () {
   }
 
   function renderChips() {
-    var res = P.state ? P.state.results : [];
-    var cur = P.active && P.state ? P.state.index : -1;
-    $('#chips').innerHTML = P.seq.map(function (s, i) {
+    var res = L.on ? [] : P.state ? P.state.results : [];
+    var seqShown = L.on ? L.seq : P.seq;
+    var cur = L.on ? L.idx : P.active && P.state ? P.state.index : -1;
+    $('#chips').innerHTML = seqShown.map(function (s, i) {
       var r = res[i], cls = 'nchip', sub = '';
       if (r) {
         if (r.skipped) { cls += ' skip'; sub = 'skip'; }
@@ -1238,6 +1295,7 @@ var RiyaazCore = (function () {
     g2.clearRect(0, 0, W, Hh);
 
     var target = P.active && P.state && !P.state.done ? P.state.target : null;
+    if (L.on && L.idx >= 0) target = C.stepCents(L.seq[L.idx], S.tuning);
     var aim = target != null ? target : latest.cents != null ? latest.cents : view.centre;
     var pxPer100 = Math.max(24, Math.min(44, Hh / 15));
     var span = Hh / pxPer100 * 100;
@@ -1330,6 +1388,13 @@ var RiyaazCore = (function () {
         $('#tDev').style.color = devColor(Math.abs(dv) <= S.tolerance ? Math.min(10, Math.abs(dv)) : Math.abs(dv));
         $('#tHint').textContent = st.wrongOctave ? (cents > tgt ? 'Right swara, one octave too high' : 'Right swara, one octave too low') : '';
       } else { $('#tDev').innerHTML = '&nbsp;'; $('#tHint').textContent = performance.now() < P.muteUntil ? 'Listen…' : ''; }
+    } else if (L.on && $('#practiceTop').hidden === false) {
+      var li = L.idx;
+      $('#ringArc').setAttribute('stroke-dashoffset', (226.2 * (1 - Math.max(0, li + 1) / L.seq.length)).toFixed(1));
+      $('#tLabel').innerHTML = li >= 0 ? swHTML(L.seq[li]) : '–';
+      $('#tSing').textContent = li >= 0 ? 'Listening · note ' + (li + 1) + ' of ' + L.seq.length : 'Listening · starting…';
+      $('#tDev').innerHTML = li >= 0 ? swText(L.seq[li]) : '&nbsp;';
+      $('#tDev').style.color = ''; $('#tHint').textContent = '';
     } else if ($('#practiceTop').hidden === false) {
       $('#ringArc').setAttribute('stroke-dashoffset', '226.2');
       $('#tLabel').innerHTML = P.seq.length ? swHTML(P.seq[0]) : '–';
@@ -1341,6 +1406,7 @@ var RiyaazCore = (function () {
   function updateHint() {
     var h = $('#hint');
     if (A.ctx && A.running && A.ctx.state !== 'running') h.textContent = 'Audio paused by the phone — tap Stop, then Start again.';
+    else if (L.on) h.textContent = 'Listen along — then press Start practice and sing it back.';
     else if (!A.running) h.textContent = S.tab === 'live' ? 'Tap Start, then sing Sa and go up and down the scale.' : 'Choose an exercise, then Start practice.';
     else h.textContent = latest.cents == null && H.len < 60 ? 'Listening… sing a note.' : '';
   }
@@ -1354,6 +1420,9 @@ var RiyaazCore = (function () {
     if (live) { mic.textContent = A.running ? 'Stop' : 'Start'; mic.classList.toggle('stop', A.running); }
     else { mic.textContent = P.active ? 'Stop practice' : 'Start practice'; mic.classList.toggle('stop', P.active); }
     $('#skipBtn').hidden = live || !P.active;
+    var lb = $('#listenBtn'); lb.hidden = live || P.active;
+    lb.textContent = L.on ? '■ Stop listening' : '▶ Listen';
+    if (!live && L.on) { mic.textContent = 'Start practice'; mic.classList.remove('stop'); }
     $('#restartBtn').hidden = live || !P.active;
     var tb = $('#tanBtn');
     tb.classList.toggle('on', T.on);
@@ -1389,6 +1458,7 @@ var RiyaazCore = (function () {
     opts('#firstOpts', S.tanFirst, function (v) { S.tanFirst = v; restartTanpuraIfOn(); });
     opts('#tolOpts', S.tolerance, function (v) { S.tolerance = +v; if (P.active) startPractice(); });
     opts('#holdOpts', S.hold, function (v) { S.hold = +v; if (P.active) startPractice(); });
+    opts('#speedOpts', S.listenStep, function (v) { S.listenStep = +v; });
     var range = function (id, key, fmt, after) {
       var el = $('#' + id), out = $('#' + id + 'Out');
       el.value = S[key]; if (out) out.textContent = fmt(S[key]);
@@ -1447,12 +1517,13 @@ var RiyaazCore = (function () {
 
   // ------------------------------------------------------------ wiring
   $$('.seg button').forEach(function (b) {
-    b.onclick = function () { S.tab = b.dataset.tab; save(); if (S.tab === 'live') stopPractice(); else buildPractice(); updateUI(); };
+    b.onclick = function () { S.tab = b.dataset.tab; save(); stopListen(); if (S.tab === 'live') stopPractice(); else buildPractice(); updateUI(); };
   });
   $('#micBtn').onclick = function () {
     if (S.tab === 'live') { if (A.running) stopMic(); else startMic().catch(function () {}); }
     else { if (P.active) stopPractice(); else startPractice().catch(function () {}); }
   };
+  $('#listenBtn').onclick = function () { if (L.on) stopListen(); else startListen(); };
   $('#skipBtn').onclick = function () { if (P.judge) { P.judge.skip(latest.t); P.state = P.judge.state(latest.t); onAdvance(P.state); } };
   $('#restartBtn').onclick = function () { startPractice(); };
   $('#hearBtn').onclick = function () { var i = P.active && P.state ? P.state.index : 0; if (P.seq[i] != null) playTone(P.seq[i], 1.2); };
