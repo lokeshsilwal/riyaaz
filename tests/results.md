@@ -50,3 +50,31 @@ Each note is scored on its own, as in the app. Singer holds each note ~2 s with 
 | practice_female_bhopali | 10/11 | 2.1 | 3.7 |
 | practice_low_bhairav | 15/15 | 1.9 | 3.8 |
 | practice_male_yaman | 13/14 | 2.7 | 6.1 |
+
+## Learn-tab feedback (synthetic singers with known faults)
+
+20 of 20 cases give the expected feedback (1 known limitation shown below). Phone-mic low cut + room noise on all cases.
+
+| case | lesson | result | what the app says |
+|---|---|---|---|
+| breath_12s | breath | ✅ | You held it for 12.1 s — Breathe in low (belly out) and release more slowly — aim for 15 s. Very even. |
+| breath_uneven | breath | ✅ | You held it for 9.0 s — Breathe in low (belly out) and release more slowly — aim for 15 s. Uneven — the hiss rose and fell. Release the air at a steady rate. |
+| five_flat | five | ✅ | On the line 0% of the time — Mostly flat by about 44¢ — aim a little higher. Ma was 65¢ flat. |
+| five_ga_flat | five | ✅ | On the line 97% of the time — Ga was 26¢ flat. |
+| five_good | five | ✅ | On the line 97% of the time — Well done. |
+| high_easy_male | high | ✅ | On the line 96% of the time — Well done. |
+| high_light | high | ✅ | On the line 96% of the time — Well done. |
+| high_push_female | high | ⚠️ known limit: a female voice on "oo" loses level naturally above the first formant, which hides 9 dB of pushing | On the line 96% of the time — Well done. |
+| high_push_male | high | ✅ | On the line 96% of the time — You got 13 dB louder on the high notes — that is often pushing. Let them be lighter. |
+| hum | hum | ✅ | On the line 96% of the time — Very steady. |
+| hum_wobbly | hum | ✅ | On the line 94% of the time — Wobbly (15¢) — relax and keep the air flowing evenly. |
+| low_good | low | ✅ | On the line 96% of the time — Well done. |
+| low_good_bass | low | ✅ | On the line 96% of the time — Well done. |
+| meend_breaks | meend | ✅ | On the line 88% of the time — 2 breaks in the sound. Keep the breath flowing and slide slower. |
+| meend_smooth | meend | ✅ | On the line 96% of the time — Smooth — no breaks in the sound. |
+| range_siren | range | ✅ | Today's range: Ma (lower) to Ga (upper) — That's 1 octave + 11 semitones. Your comfortable range grows with daily practice. |
+| staccato | staccato | ✅ | 5 of 5 notes hit — Nicely separated. |
+| swell_flat_dyn | swell | ✅ | On the line 97% of the time — Only 2 dB of change — start softer and grow louder. |
+| swell_good | swell | ✅ | On the line 97% of the time — Good volume change (9 dB). Pitch stayed level while the volume changed — great control. |
+| swell_sharp | swell | ✅ | On the line 83% of the time — Good volume change (9 dB). Your pitch went sharp by about 20¢ when you got louder — keep it level. |
+| trill | trill | ✅ | On the line 96% of the time — Smooth — no breaks in the sound. |

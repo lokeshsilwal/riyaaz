@@ -28,7 +28,34 @@ Run it before and after every change to the tracker.
 - **Tanpura bleed:** the app's own tanpura, played through a simulated phone speaker at −12 dB and −6 dB relative to the voice.
 - **Practice runs:** Yaman, Bhopali and Bhairav sung with held notes. These check that the sharp/flat offset the app reports matches the offset that was actually sung.
 
+## Learn-tab lessons
+
+    python3 synth_lessons.py     # synthetic singers with known faults (cases_lessons/)
+    python3 evaluate_lessons.py  # checks the app's feedback; appends to results.md
+
+Each case states what the feedback must say. For example:
+
+- singing 60¢ flat must give a low score and a "flat" tip;
+- getting 10 dB louder on the high notes must give a "louder" warning;
+- a siren from lower Ma to upper Ga must report that range;
+- two gaps in a meend must count as 2 breaks;
+- a 12-second hiss must time as 12 seconds.
+
+Known limitation: the "louder on high notes" warning compares loudness only, and the vowel and pitch alone can shift loudness by about ±5 dB. It therefore misses some pushing, for example a female voice singing "oo".
+
+## Theory tab
+
+    node check_theory.js
+
+This checks the facts the Theory tab shows:
+
+- each thaat has Sa, Pa and one form of every other swara;
+- each Western mode name matches its interval pattern;
+- every raag in the app uses swaras from the thaat it is listed under;
+- the taal beat counts, vibhags and thekas agree;
+- the harmonium names are right (C = Safed 1, C# = Kali 1).
+
 ## Other scripts
 
 - `sweep.py` tries tracker parameters (for example `yinThreshold`, `tanK`) on the tanpura cases.
-- `run_tracker.js`, `run_judge.js` and `render_tanpura.js` are small Node runners that `evaluate.py` and `synth.py` call.
+- `run_tracker.js`, `run_judge.js`, `run_lesson.js` and `render_tanpura.js` are small Node runners that `evaluate.py` and `synth.py` call.

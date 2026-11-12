@@ -41,7 +41,8 @@ header{display:flex;align-items:center;gap:8px;padding:10px 12px 6px}
 /* tabs + raag row */
 .bar{display:flex;gap:8px;padding:4px 12px 8px;align-items:center}
 .seg{display:flex;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:3px}
-.seg button{padding:6px 14px;border-radius:7px;color:var(--muted);font-weight:600}
+.seg{flex:1}
+.seg button{flex:1;padding:6px 10px;border-radius:7px;color:var(--muted);font-weight:600}
 .seg button.on{background:var(--surface2);color:var(--text)}
 select{appearance:none;-webkit-appearance:none;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23a8998b'/%3E%3C/svg%3E") no-repeat right 10px center;
   border:1px solid var(--line);border-radius:10px;padding:7px 28px 7px 10px;min-width:0}
@@ -106,6 +107,65 @@ th{color:var(--muted);font-weight:500;font-size:12px}
 .tips{margin:10px 0 0;padding-left:18px;color:var(--text)}
 .tips li{margin:3px 0}
 
+/* learn */
+#learnList{flex:1;overflow:auto;padding:0 12px 12px}
+#learnList h4{margin:16px 2px 8px;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.lcard{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-bottom:8px}
+.lcard b{font-size:16px}
+.lcard span{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.lcard .badge{display:inline-block;float:right;margin:0;font-size:12px;color:var(--good);background:rgba(74,222,128,.12);border-radius:999px;padding:1px 8px}
+.basics{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 13px;margin-top:4px}
+.basics summary{font-weight:600;cursor:pointer}
+.basics ul{margin:8px 0 2px;padding-left:18px;color:var(--text);font-size:14px}
+.basics li{margin:4px 0}
+#learnTop{padding:0 14px 8px}
+#learnTop .prow{gap:10px}
+#lTitle{font-size:17px}
+#lGoal{margin:4px 0 2px}
+#lTips{margin:4px 0 6px;padding-left:18px;color:var(--muted);font-size:13px}
+#lTips li{margin:2px 0}
+#lStatus{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-height:56px}
+.lhead{font-size:18px;font-weight:700}
+.lbtns{display:flex;gap:8px;margin-top:8px}
+#lStatus .tips{margin:6px 0 0}
+
+/* theory */
+#theoryList,#theoryTopic{flex:1;overflow:auto;padding:0 14px 16px}
+#theoryTopic .ttl{font-size:17px}
+#theoryTopic .prow{gap:10px;margin-bottom:4px}
+.tx p{margin:8px 0}
+.tx ul{margin:6px 0;padding-left:18px}
+.tx li{margin:4px 0}
+.tx .sw,.note .sw{font-weight:600}
+.trow{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.sec.sm{height:auto;min-height:38px;padding:8px 12px;font-size:14px;border-radius:19px}
+.sec.accent{background:var(--accent);color:#1a1209;border-color:var(--accent)}
+.piano{position:relative;height:118px;margin:12px 0 4px;user-select:none;-webkit-user-select:none}
+.key{position:absolute;top:0;border-radius:0 0 6px 6px;display:flex;align-items:flex-end;justify-content:center;font-size:11px;font-weight:700;cursor:pointer}
+.key.white{height:100%;background:#efe7dc;border:1px solid #6d6157;color:#2a211b;z-index:1;padding-bottom:6px}
+.key.black{height:62%;background:#1b1512;border:1px solid #000;color:#f4ede5;z-index:2;padding-bottom:5px;font-size:9px;letter-spacing:-.4px;overflow:hidden}
+.key.on.white{background:#fcd9a0}
+.key.on.black{background:#8a5a12}
+.key.sa.white{background:#f59e0b}
+.key.sa.black{background:#c27c0b}
+.key.hit{filter:brightness(1.35);box-shadow:inset 0 -6px 0 #4ade80}
+.notes.small{grid-template-columns:repeat(6,1fr);margin-top:6px}
+.notes.small button{padding:6px 0;font-size:14px}
+.opts.wrap{margin:10px 0}
+.ear{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:12px}
+.taal{margin:10px 0;display:flex;flex-direction:column;gap:6px}
+.vib{display:flex;gap:5px;align-items:stretch}
+.vib .mk{width:22px;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--accent2)}
+.cell{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:8px;text-align:center;padding:4px 0 6px;font-weight:600;font-size:14px}
+.cell small{display:block;font-size:10px;color:var(--faint);font-weight:500}
+.cell.now{background:var(--accent);color:#1a1209;border-color:var(--accent)}
+.cell.now small{color:#1a1209}
+.quiz{margin-top:18px;border-top:1px solid var(--line);padding-top:4px}
+.quiz h4{margin:10px 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.qq p{margin:10px 0 6px}
+.opts button.right{background:rgba(74,222,128,.2);border-color:var(--good)}
+.opts button.wrong{background:rgba(248,113,113,.2);border-color:var(--bad)}
+
 /* footer */
 footer{display:flex;gap:10px;align-items:center;justify-content:center;padding:10px 12px calc(10px + var(--safe-b))}
 .big{min-width:150px;height:52px;border-radius:26px;background:var(--accent);color:#1a1209;font-weight:700;font-size:17px;padding:0 22px}
@@ -150,7 +210,11 @@ footer{display:flex;gap:10px;align-items:center;justify-content:center;padding:1
   <div class="seg" role="tablist">
     <button data-tab="live" class="on">Live</button>
     <button data-tab="practice">Practice</button>
+    <button data-tab="learn">Learn</button>
+    <button data-tab="theory">Theory</button>
   </div>
+</div>
+<div class="bar" id="raagBar">
   <select id="raagSel" aria-label="Raag"></select>
   <button id="infoBtn" class="link">About</button>
 </div>
@@ -188,14 +252,26 @@ footer{display:flex;gap:10px;align-items:center;justify-content:center;padding:1
   </div>
 </section>
 
+<section id="learnList" hidden></section>
+<section id="theoryList" hidden></section>
+<section id="theoryTopic" hidden></section>
+<section id="learnTop" hidden>
+  <div class="prow"><button id="lBack" class="link">← Lessons</button><b id="lTitle"></b></div>
+  <div id="lGoal"></div>
+  <ul id="lTips"></ul>
+  <div id="lStatus"></div>
+</section>
+
 <div id="graphWrap">
   <canvas id="graph"></canvas>
   <div id="hint"></div>
   <section id="summary" hidden></section>
 </div>
 
-<footer>
+<footer id="footer">
   <button id="micBtn" class="big">Start</button>
+  <button id="demoBtn" class="sec" hidden>▶ Demo</button>
+  <button id="tryBtn" class="big" hidden>Try it</button>
   <button id="listenBtn" class="sec" hidden>▶ Listen</button>
   <button id="skipBtn" class="sec" hidden>Skip</button>
   <button id="restartBtn" class="sec" hidden>Restart</button>
@@ -842,6 +918,282 @@ var RiyaazCore = (function () {
   // pluck times as fractions of one cycle
   var TANPURA_PATTERN = [0, 0.3, 0.5, 0.7];
 
+  // ------------------------------------------------------------ lessons
+  // Beginner lessons. `path` is a list of [step, seconds, glide]:
+  //   step = semitones from Sa (null = silence), glide = slide into it from the
+  //   previous pitch over the segment instead of holding it.
+  var LESSONS = [
+    { id: 'breath', group: 'Warm up', title: 'Steady breath', vowel: 'sss', kind: 'breath', maxDur: 30,
+      goal: 'Breathe in low, then let the air out on a long, even "sss".',
+      tips: ['Shoulders down, let your belly expand as you breathe in.', 'Release slowly — keep the hiss at one level.', 'Aim for 15 seconds or more.'] },
+    { id: 'hum', group: 'Warm up', title: 'Hum on Sa', vowel: 'mm', kind: 'hold', tol: 25,
+      path: [[0, 5]],
+      goal: 'Hum "mmm" on Sa with lips closed and hold it steady.',
+      tips: ['Teeth apart, lips lightly together.', 'Feel a buzz on your lips and nose.', 'Keep it gentle — no pushing.'] },
+    { id: 'trill', group: 'Warm up', title: 'Lip trill slide', vowel: 'trill', kind: 'slide', tol: 50,
+      path: [[0, 1], [7, 1.5, 1], [7, 0.5], [0, 1.5, 1], [0, 0.5]],
+      goal: 'Blow through loose lips ("brrr") while sliding Sa → Pa → Sa.',
+      tips: ['Lips loose, a little air behind them.', 'If lips won\'t trill, press your cheeks lightly with your fingers.', 'Keep the sound going through the slide — no gaps.'] },
+    { id: 'five', group: 'Control', title: 'Five-note warm-up', vowel: 'aa', kind: 'notes', tol: 35, region: 'mid',
+      path: [[0, 0.8], [2, 0.8], [4, 0.8], [5, 0.8], [7, 1.2], [5, 0.8], [4, 0.8], [2, 0.8], [0, 1.2]],
+      goal: 'Sing Sa Re Ga Ma Pa and back down on "aa".',
+      tips: ['Open, relaxed "aa", jaw loose.', 'Same easy volume on every note.', 'Land each note cleanly.'] },
+    { id: 'meend', group: 'Control', title: 'Meend (glide)', vowel: 'aa', kind: 'slide', tol: 40,
+      path: [[0, 1], [4, 1.2, 1], [4, 1], [0, 1.2, 1], [0, 1]],
+      goal: 'Glide smoothly from Sa up to Ga and back, without breaking the sound.',
+      tips: ['Pass through every pitch on the way — no jumps.', 'Keep the breath flowing through the glide.', 'Slow and even.'] },
+    { id: 'swell', group: 'Control', title: 'Soft–loud–soft', vowel: 'aa', kind: 'swell', tol: 30,
+      path: [[0, 6]], dyn: [[0, 0.15], [3, 1], [6, 0.15]],
+      goal: 'Hold Sa: start soft, grow louder, then soft again — keep the pitch level.',
+      tips: ['Louder comes from more breath, not from squeezing the throat.', 'Watch the line: it should stay flat on Sa.', 'Pitch tends to go sharp when loud, flat when soft.'] },
+    { id: 'staccato', group: 'Control', title: 'Short notes ("ha")', vowel: 'aa', kind: 'staccato', tol: 40,
+      path: [[0, 0.35], [null, 0.35], [4, 0.35], [null, 0.35], [7, 0.35], [null, 0.35], [4, 0.35], [null, 0.35], [0, 0.5]],
+      goal: 'Sing short, separate "ha" notes: Sa Ga Pa Ga Sa.',
+      tips: ['A small kick from the belly on each "ha".', 'Silence between notes.', 'Hit the pitch straight away.'] },
+    { id: 'low', group: 'Range', title: 'Lower notes (mandra)', vowel: 'aa', kind: 'notes', tol: 35, region: 'low',
+      path: [[0, 1], [-1, 0.8], [-3, 0.8], [-5, 1.5], [-3, 0.8], [-1, 0.8], [0, 1.2]],
+      goal: 'Go down from Sa to lower Pa and back up.',
+      tips: ['Relax the jaw; don\'t press the chin down.', 'Low notes can be quieter — that\'s fine.', 'Keep the breath moving.'] },
+    { id: 'high', group: 'Range', title: 'Upper notes (taar)', vowel: 'oo', kind: 'notes', tol: 35, region: 'high',
+      path: [[7, 1], [9, 0.8], [11, 0.8], [12, 1.5], [11, 0.8], [9, 0.8], [7, 1.2]],
+      goal: 'Go up from Pa to upper Sa and back, light and easy.',
+      tips: ['Get lighter, not louder, as you go up.', 'An "oo" shape helps the high notes.', 'Stop if it hurts or scratches.'] },
+    { id: 'range', group: 'Range', title: 'Find your range (siren)', vowel: 'oo', kind: 'range', maxDur: 12,
+      path: [[-5, 0.5], [19, 4, 1], [19, 0.3], [-5, 4, 1]],
+      goal: 'On "oo", slide from your lowest comfortable note to your highest and back.',
+      tips: ['Like a siren — smooth and light.', 'Only go as far as is comfortable.', 'Try it twice in the 12 seconds.'] }
+  ];
+
+  // Path in cents: [{t0, t1, c0, c1}] (c null = silence) + total duration.
+  function lessonPath(lesson, tuning) {
+    var segs = [], t = 0, prev = null;
+    (lesson.path || []).forEach(function (p) {
+      var c = p[0] == null ? null : stepCents(p[0], tuning);
+      var c0 = p[2] && prev != null && c != null ? prev : c;
+      segs.push({ t0: t, t1: t + p[1], c0: c0, c1: c });
+      t += p[1]; if (c != null) prev = c;
+    });
+    return { segs: segs, dur: t };
+  }
+
+  function pathAt(path, t) {
+    var s = path.segs;
+    for (var i = 0; i < s.length; i++) {
+      if (t >= s[i].t0 && t < s[i].t1) {
+        if (s[i].c1 == null) return null;
+        var u = (t - s[i].t0) / (s[i].t1 - s[i].t0);
+        return s[i].c0 + (s[i].c1 - s[i].c0) * u;
+      }
+    }
+    return null;
+  }
+
+  function pct(a, p) { var b = a.slice().sort(function (x, y) { return x - y; }); return b.length ? b[Math.min(b.length - 1, Math.floor(p * (b.length - 1)))] : 0; }
+  function meanOf(a) { var s = 0; for (var i = 0; i < a.length; i++) s += a[i]; return a.length ? s / a.length : 0; }
+  function sdOf(a) { var m = meanOf(a), s = 0; for (var i = 0; i < a.length; i++) s += (a[i] - m) * (a[i] - m); return a.length ? Math.sqrt(s / a.length) : 0; }
+  function cName(c, tuning) { var n = nearestSwara(c, tuning); var sw = SWARA[n.deg]; return (sw.komal ? 'komal ' : '') + (sw.tivra ? 'tivra ' : '') + sw.name + (n.oct < 0 ? ' (lower)' : n.oct > 0 ? ' (upper)' : ''); }
+  function spanText(cents) {
+    var st = Math.round(cents / 100), o = Math.floor(st / 12), r = st - o * 12;
+    return (o ? o + ' octave' + (o > 1 ? 's' : '') : '') + (o && r ? ' + ' : '') + (r || !o ? r + ' semitone' + (r === 1 ? '' : 's') : '');
+  }
+
+  // Score one try. frames: [{t (s from the start of the path), c (cents above Sa or null), db}]
+  // Returns {score (0-100 or null), headline, tips[], stats}
+  function scoreLesson(lesson, frames, o) {
+    o = o || {};
+    var tuning = o.tuning || 'just', tips = [], stats = {};
+    var path = lessonPath(lesson, tuning);
+
+    if (lesson.kind === 'breath') {
+      var dbs = frames.map(function (f) { return f.db; });
+      var floor = o.floorDb != null ? o.floorDb : pct(dbs, 0.1);
+      var thr = Math.max(floor + 12, -75);
+      var best = { a: 0, b: -1 }, start = null, lastOn = null;
+      frames.forEach(function (f, i) {
+        if (f.db > thr) {
+          if (start === null || f.t - lastOn > 0.2) start = i;
+          lastOn = f.t;
+          if (f.t - frames[start].t > (best.b >= 0 ? frames[best.b].t - frames[best.a].t : -1)) best = { a: start, b: i };
+        }
+      });
+      var dur = best.b >= 0 ? frames[best.b].t - frames[best.a].t : 0;
+      var inner = frames.slice(best.a, best.b + 1).filter(function (f) { return f.t > frames[best.a].t + 0.4 && f.t < frames[best.b].t - 0.4 && f.db > thr; }).map(function (f) { return f.db; });
+      var ev = sdOf(inner);
+      stats = { seconds: dur, evenness: ev };
+      if (dur < 1) return { score: 0, headline: 'I didn\'t hear a steady "sss". Try again a little closer to the phone.', tips: [], stats: stats };
+      tips.push(dur >= 15 ? 'Great breath control.' : 'Breathe in low (belly out) and release more slowly — aim for 15 s.');
+      tips.push(ev < 1.5 ? 'Very even.' : ev < 3 ? 'Fairly even — try to keep the hiss at exactly one level.' : 'Uneven — the hiss rose and fell. Release the air at a steady rate.');
+      return { score: Math.min(100, Math.round(dur / 15 * 100)), headline: 'You held it for ' + dur.toFixed(1) + ' s', tips: tips, stats: stats };
+    }
+
+    var voiced = frames.filter(function (f) { return f.c != null; });
+
+    if (lesson.kind === 'range') {
+      var stable = [];
+      for (var i = 0; i + 25 <= frames.length; i++) {
+        var w = frames.slice(i, i + 25), ok = true, cs = [];
+        for (var k = 0; k < w.length; k++) { if (w[k].c == null) { ok = false; break; } cs.push(w[k].c); }
+        if (!ok) continue;
+        cs.sort(function (a, b) { return a - b; });
+        if (cs[cs.length - 1] - cs[0] < 80) stable.push(cs[12]);
+      }
+      // a slide never sits still, so also accept the extremes of slow-moving voiced runs
+      var smooth = [];
+      for (i = 2; i + 2 < frames.length; i++) {
+        var win = frames.slice(i - 2, i + 3);
+        if (win.every(function (f) { return f.c != null; })) {
+          var cc = win.map(function (f) { return f.c; }).sort(function (a, b) { return a - b; });
+          if (cc[4] - cc[0] < 120) smooth.push(cc[2]);
+        }
+      }
+      var pool = smooth.length >= 30 ? smooth : stable;
+      if (pool.length < 10) return { score: null, headline: 'I couldn\'t hear enough of the slide. Try again a little louder.', tips: [], stats: {} };
+      var lo = pct(pool, 0.01), hi = pct(pool, 0.99);
+      stats = { low: lo, high: hi, span: hi - lo };
+      tips.push('That\'s ' + spanText(hi - lo) + '. Your comfortable range grows with daily practice.');
+      if (lo > -100) tips.push('Try letting the bottom relax a little lower (below Sa).');
+      if (hi < 1100) tips.push('Try sliding a little higher on a light "oo" — no pushing.');
+      return { score: null, headline: 'Today\'s range: ' + cName(lo, tuning) + ' to ' + cName(hi, tuning), tips: tips, stats: stats };
+    }
+
+    // pitch-following lessons
+    var tol = lesson.tol || 35, lags = [0, -0.1, -0.2, -0.3, 0.1];
+    var tgtFrames = 0, matched = 0, devs = [];
+    frames.forEach(function (f) {
+      var T = pathAt(path, f.t);
+      if (T == null || f.t < 0 || f.t > path.dur) return;
+      tgtFrames++;
+      if (f.c == null) return;
+      var hit = false;
+      for (var j = 0; j < lags.length && !hit; j++) {
+        var T2 = pathAt(path, f.t + lags[j]);
+        if (T2 != null && Math.abs(f.c - T2) <= tol) hit = true;
+      }
+      if (hit) matched++;
+      if (Math.abs(f.c - T) < 200) devs.push(f.c - T);
+    });
+    var acc = tgtFrames ? matched / tgtFrames : 0;
+    var heard = tgtFrames ? frames.filter(function (f) { return f.c != null && pathAt(path, f.t) != null; }).length / tgtFrames : 0;
+    stats = { accuracy: acc, heard: heard };
+    var score = Math.round(acc * 100), head = 'On the line ' + score + '% of the time';
+
+    if (heard < 0.4) tips.push('I could barely hear you — sing a little louder or move closer to the phone.');
+    var md = meanOf(devs);
+    stats.meanDev = md;
+    if (devs.length > 20 && Math.abs(md) > 20) tips.push('Mostly ' + (md > 0 ? 'sharp' : 'flat') + ' by about ' + Math.round(Math.abs(md)) + '¢ — aim a little ' + (md > 0 ? 'lower' : 'higher') + '.');
+
+    // breaks: gaps in the sound or sudden jumps while the guide line is smooth
+    if (lesson.kind === 'slide' || lesson.kind === 'notes') {
+      var gaps = 0, jumps = 0, gapStart = null, lastV = null, lastJump = -9;
+      frames.forEach(function (f) {
+        var T = pathAt(path, f.t);
+        if (T == null) { gapStart = null; return; }
+        if (f.c == null) { if (gapStart === null && lastV) gapStart = f.t; return; }
+        if (gapStart !== null) { var g = f.t - gapStart; if (g >= 0.08 && g <= 0.6) gaps++; gapStart = null; }
+        if (lastV && f.t - lastV.t < 0.025 && Math.abs(f.c - lastV.c) > 150) {
+          var Tp = pathAt(path, lastV.t), dT = Tp == null ? 0 : Math.abs(T - Tp);
+          if (dT < 60 && f.t - lastJump > 0.2) { jumps++; lastJump = f.t; }
+        }
+        lastV = f;
+      });
+      stats.breaks = gaps + jumps;
+      if (lesson.kind === 'slide') tips.push(stats.breaks === 0 ? 'Smooth — no breaks in the sound.' : stats.breaks + ' break' + (stats.breaks > 1 ? 's' : '') + ' in the sound. Keep the breath flowing and slide slower.');
+      else if (stats.breaks > 1) tips.push('The sound broke ' + stats.breaks + ' times — keep the breath going between notes.');
+    }
+
+    if (lesson.kind === 'notes') {
+      // most-off note
+      var worst = null;
+      path.segs.forEach(function (s) {
+        if (s.c1 == null) return;
+        var d = frames.filter(function (f) { return f.c != null && f.t >= s.t0 + 0.15 && f.t < s.t1 + 0.1 && Math.abs(f.c - s.c1) < 150; }).map(function (f) { return f.c - s.c1; });
+        if (d.length < 5) return;
+        var m = meanOf(d);
+        if (!worst || Math.abs(m) > Math.abs(worst.m)) worst = { m: m, c: s.c1 };
+      });
+      if (worst && Math.abs(worst.m) > 15) tips.push(cName(worst.c, tuning) + ' was ' + Math.round(Math.abs(worst.m)) + '¢ ' + (worst.m > 0 ? 'sharp' : 'flat') + '.');
+      // louder on the high notes = pushing
+      var ts = path.segs.filter(function (s) { return s.c1 != null; }).map(function (s) { return s.c1; });
+      var maxT = Math.max.apply(null, ts), minT = Math.min.apply(null, ts);
+      var hiDb = [], loDb = [];
+      voiced.forEach(function (f) {
+        var T = pathAt(path, f.t); if (T == null) return;
+        if (T >= maxT - 120) hiDb.push(f.db); else if (T <= minT + 120) loDb.push(f.db);
+      });
+      if (hiDb.length > 10 && loDb.length > 10 && maxT - minT >= 300) {
+        stats.loudRise = meanOf(hiDb) - meanOf(loDb);
+        // Vowel and pitch alone can shift the level by ~5 dB, so only flag a clear rise.
+        if (stats.loudRise > 8) tips.push('You got ' + Math.round(stats.loudRise) + ' dB louder on the high notes — that is often pushing. Let them be lighter.');
+      }
+    }
+
+    if (lesson.kind === 'hold' || lesson.kind === 'swell') {
+      var mid = voiced.filter(function (f) { return f.t > 0.5 && f.t < path.dur - 0.3 && pathAt(path, f.t) != null && Math.abs(f.c - pathAt(path, f.t)) < 150; });
+      var d2 = mid.map(function (f) { return f.c - pathAt(path, f.t); });
+      stats.steadiness = sdOf(d2);
+      if (lesson.kind === 'hold' && d2.length > 20) {
+        tips.push(stats.steadiness < 6 ? 'Very steady.' : stats.steadiness < 12 ? 'Slight wobble (' + Math.round(stats.steadiness) + '¢) — steady breath helps.' : 'Wobbly (' + Math.round(stats.steadiness) + '¢) — relax and keep the air flowing evenly.');
+      }
+      if (lesson.kind === 'swell' && mid.length > 30) {
+        var dbm = mid.map(function (f) { return f.db; });
+        var range = pct(dbm, 0.9) - pct(dbm, 0.1);
+        var mx = meanOf(dbm), my = meanOf(d2), sxy = 0, sxx = 0;
+        for (var q = 0; q < mid.length; q++) { sxy += (dbm[q] - mx) * (d2[q] - my); sxx += (dbm[q] - mx) * (dbm[q] - mx); }
+        var drift = sxx > 0 ? sxy / sxx * range : 0;
+        stats.dbRange = range; stats.drift = drift;
+        if (range < 8) tips.push('Only ' + Math.round(range) + ' dB of change — start softer and grow louder.');
+        else tips.push('Good volume change (' + Math.round(range) + ' dB).');
+        if (Math.abs(drift) > 15) tips.push('Your pitch went ' + (drift > 0 ? 'sharp' : 'flat') + ' by about ' + Math.round(Math.abs(drift)) + '¢ when you got louder — keep it level.');
+        else if (range >= 8) tips.push('Pitch stayed level while the volume changed — great control.');
+      }
+    }
+
+    if (lesson.kind === 'staccato') {
+      var notes = path.segs.filter(function (s) { return s.c1 != null; }), hits = 0;
+      notes.forEach(function (s) {
+        var n = frames.filter(function (f) { return f.c != null && f.t >= s.t0 - 0.1 && f.t < s.t1 + 0.3 && Math.abs(f.c - s.c1) <= tol; }).length;
+        if (n >= 10) hits++;
+      });
+      var gapsSil = path.segs.filter(function (s) { return s.c1 == null; });
+      var sil = 0, tot = 0;
+      gapsSil.forEach(function (s) { frames.forEach(function (f) { if (f.t >= s.t0 + 0.12 && f.t < s.t1) { tot++; if (f.c == null) sil++; } }); });
+      stats.hits = hits; stats.separated = tot ? sil / tot : 0;
+      score = Math.round(100 * hits / notes.length);
+      head = hits + ' of ' + notes.length + ' notes hit';
+      tips.push(stats.separated > 0.5 ? 'Nicely separated.' : 'Leave a real silence between the notes.');
+    }
+
+    if (!tips.length) tips.push(score >= 80 ? 'Well done.' : 'Watch the line and follow it with your voice.');
+    return { score: score, headline: head, tips: tips.slice(0, 3), stats: stats };
+  }
+
+  // ------------------------------------------------------------ theory data
+  // The 10 thaats (Bhatkhande). steps = semitones above Sa.
+  var THAATS = [
+    { id: 'bilawal', name: 'Bilawal', steps: [0, 2, 4, 5, 7, 9, 11], western: 'Major scale (Ionian)', raags: 'Bilawal, Durga' },
+    { id: 'khamaj', name: 'Khamaj', steps: [0, 2, 4, 5, 7, 9, 10], western: 'Mixolydian mode', raags: 'Khamaj, Desh' },
+    { id: 'kafi', name: 'Kafi', steps: [0, 2, 3, 5, 7, 9, 10], western: 'Dorian mode', raags: 'Kafi, Bhimpalasi' },
+    { id: 'asavari', name: 'Asavari', steps: [0, 2, 3, 5, 7, 8, 10], western: 'Natural minor scale (Aeolian)', raags: 'Asavari, Jaunpuri' },
+    { id: 'bhairavi', name: 'Bhairavi', steps: [0, 1, 3, 5, 7, 8, 10], western: 'Phrygian mode', raags: 'Bhairavi, Malkauns' },
+    { id: 'bhairav', name: 'Bhairav', steps: [0, 1, 4, 5, 7, 8, 11], western: 'Double harmonic major', raags: 'Bhairav, Ahir Bhairav' },
+    { id: 'kalyan', name: 'Kalyan', steps: [0, 2, 4, 6, 7, 9, 11], western: 'Lydian mode', raags: 'Yaman, Bhopali' },
+    { id: 'marwa', name: 'Marwa', steps: [0, 1, 4, 6, 7, 9, 11], western: null, raags: 'Marwa, Sohini' },
+    { id: 'purvi', name: 'Purvi', steps: [0, 1, 4, 6, 7, 8, 11], western: null, raags: 'Purvi, Puriya Dhanashri' },
+    { id: 'todi', name: 'Todi', steps: [0, 1, 3, 6, 7, 8, 11], western: null, raags: 'Miyan ki Todi, Multani' }
+  ];
+
+  // Taals: vibhag sizes, the mark shown at the start of each vibhag
+  // (X = sam, 0 = khali, numbers = taali), and the tabla theka.
+  var TAALS = [
+    { id: 'teentaal', name: 'Teentaal', vibhag: [4, 4, 4, 4], marks: ['X', '2', '0', '3'],
+      bols: ['Dha', 'Dhin', 'Dhin', 'Dha', 'Dha', 'Dhin', 'Dhin', 'Dha', 'Dha', 'Tin', 'Tin', 'Ta', 'Ta', 'Dhin', 'Dhin', 'Dha'] },
+    { id: 'keherwa', name: 'Keherwa', vibhag: [4, 4], marks: ['X', '0'], bols: ['Dha', 'Ge', 'Na', 'Ti', 'Na', 'Ka', 'Dhi', 'Na'] },
+    { id: 'dadra', name: 'Dadra', vibhag: [3, 3], marks: ['X', '0'], bols: ['Dha', 'Dhi', 'Na', 'Dha', 'Ti', 'Na'] }
+  ];
+
+  // Harmonium "scale" names used in India: white keys = safed, black keys = kali.
+  var HARMONIUM_NAMES = ['Safed 1', 'Kali 1', 'Safed 2', 'Kali 2', 'Safed 3', 'Safed 4', 'Kali 3', 'Safed 5', 'Kali 4', 'Safed 6', 'Kali 5', 'Safed 7'];
+
   function mulberry32(a) {
     return function () {
       a |= 0; a = a + 0x6D2B79F5 | 0;
@@ -856,7 +1208,9 @@ var RiyaazCore = (function () {
     TANPURA_PATTERN: TANPURA_PATTERN,
     noteFreq: noteFreq, stepCents: stepCents, nearestSwara: nearestSwara,
     createTracker: createTracker, raagAllowed: raagAllowed, exerciseSequence: exerciseSequence,
-    createJudge: createJudge, renderTanpuraString: renderTanpuraString, tanpuraStrings: tanpuraStrings
+    createJudge: createJudge, renderTanpuraString: renderTanpuraString, tanpuraStrings: tanpuraStrings,
+    LESSONS: LESSONS, lessonPath: lessonPath, pathAt: pathAt, scoreLesson: scoreLesson,
+    THAATS: THAATS, TAALS: TAALS, HARMONIUM_NAMES: HARMONIUM_NAMES
   };
 })();
 // === RIYAAZ CORE END ===
@@ -937,6 +1291,7 @@ var RiyaazCore = (function () {
       A.tanVol.connect(A.merger, 0, 1);
       A.toneBus = ctx.createGain(); A.toneBus.gain.value = 0.5; A.toneBus.connect(ctx.destination);
       A.beatBus = ctx.createGain(); A.beatBus.gain.value = 0.3; A.beatBus.connect(ctx.destination);
+      A.demoBus = ctx.createGain(); A.demoBus.gain.value = 0.6; A.demoBus.connect(ctx.destination);
       ctx.onstatechange = updateHint;
     }
     return A.ctx.state === 'running' ? Promise.resolve() : A.ctx.resume();
@@ -1082,7 +1437,7 @@ var RiyaazCore = (function () {
   // reference tone (a soft harmonium-like reed)
   var toneWave = null;
   // schedule one reference note at ctx time `t`; returns a handle to cut it short
-  function toneAt(step, t, dur) {
+  function toneAt(step, t, dur, hz) {
     var ctx = A.ctx;
     if (!toneWave) {
       var n = 12, re = new Float32Array(n), im = new Float32Array(n);
@@ -1092,7 +1447,7 @@ var RiyaazCore = (function () {
     }
     var o = ctx.createOscillator(), g = ctx.createGain();
     o.setPeriodicWave(toneWave);
-    o.frequency.value = saHz() * Math.pow(2, C.stepCents(step, S.tuning) / 1200);
+    o.frequency.value = hz || saHz() * Math.pow(2, C.stepCents(step, S.tuning) / 1200);
     var rel = Math.min(0.15, dur * 0.25);
     g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.35, t + 0.05);
     g.gain.setValueAtTime(0.35, t + dur - rel); g.gain.linearRampToValueAtTime(0, t + dur);
@@ -1202,6 +1557,7 @@ var RiyaazCore = (function () {
     H.i = (H.i + 1) % H.n; if (H.len < H.n) H.len++;
     H.lastT = r.t; H.lastWall = performance.now();
     latest = { cents: cents, f0: r.f0, t: r.t };
+    if (LS.phase === 'countin' || LS.phase === 'run') learnFrame(r, cents);
     if (P.active && P.judge && performance.now() > P.muteUntil) {
       var st = P.judge.feed(r.t, cents);
       P.state = st;
@@ -1329,6 +1685,7 @@ var RiyaazCore = (function () {
     var W = view.w, Hh = view.h, d = view.dpr;
     g2.setTransform(d, 0, 0, d, 0, 0);
     g2.clearRect(0, 0, W, Hh);
+    if (S.tab === 'learn') { drawLearn(W, Hh); return; }
 
     var target = P.active && P.state && !P.state.done ? P.state.target : null;
     if (L.on && L.idx >= 0) target = C.stepCents(L.seq[L.idx], S.tuning);
@@ -1448,9 +1805,40 @@ var RiyaazCore = (function () {
   }
 
   function updateUI() {
-    var live = S.tab === 'live';
+    var live = S.tab === 'live', learn = S.tab === 'learn', theory = S.tab === 'theory';
+    $('#theoryList').hidden = !theory || !!TH.topic;
+    $('#theoryTopic').hidden = !theory || !TH.topic;
+    $('#footer').hidden = theory;
+    if (theory) {
+      $$('.seg button').forEach(function (b) { b.classList.toggle('on', b.dataset.tab === S.tab); });
+      ['#readout', '#practiceTop', '#raagBar', '#learnList', '#learnTop', '#graphWrap'].forEach(function (k) { $(k).hidden = true; });
+      var tb1 = $('#tanBtn'); tb1.classList.toggle('on', T.on); tb1.textContent = T.busy ? 'Tuning…' : T.on ? 'Tanpura ■' : 'Tanpura ▶';
+      $('#saLabel').textContent = C.NOTE_NAMES[S.note] + S.octave + (S.fine ? (S.fine > 0 ? '+' : '') + S.fine + '¢' : '');
+      return;
+    }
     $$('.seg button').forEach(function (b) { b.classList.toggle('on', b.dataset.tab === S.tab); });
-    $('#readout').hidden = !live; $('#practiceTop').hidden = live;
+    $('#readout').hidden = !live; $('#practiceTop').hidden = S.tab !== 'practice';
+    $('#raagBar').hidden = learn;
+    $('#learnList').hidden = !learn || !!LS.lesson;
+    $('#learnTop').hidden = !learn || !LS.lesson;
+    $('#graphWrap').hidden = learn && !LS.lesson;
+    $('#micBtn').hidden = learn;
+    $('#demoBtn').hidden = !learn || !LS.lesson;
+    $('#tryBtn').hidden = !learn || !LS.lesson;
+    if (learn) {
+      $('#summary').hidden = true; $('#listenBtn').hidden = true; $('#skipBtn').hidden = true; $('#restartBtn').hidden = true;
+      var busy = LS.phase === 'countin' || LS.phase === 'run';
+      $('#demoBtn').textContent = LS.demo ? '■ Stop' : '▶ Demo';
+      $('#demoBtn').disabled = busy;
+      $('#tryBtn').textContent = busy ? 'Stop' : LS.phase === 'done' ? 'Try again' : 'Try it';
+      $('#tryBtn').classList.toggle('stop', busy);
+      var tb0 = $('#tanBtn'); tb0.classList.toggle('on', T.on); tb0.textContent = T.busy ? 'Tuning…' : T.on ? 'Tanpura ■' : 'Tanpura ▶';
+      $('#saLabel').textContent = C.NOTE_NAMES[S.note] + S.octave + (S.fine ? (S.fine > 0 ? '+' : '') + S.fine + '¢' : '');
+      $('#hint').textContent = '';
+      requestAnimationFrame(resize);
+      return;
+    }
+    requestAnimationFrame(resize);
     if (live) $('#summary').hidden = true;
     var mic = $('#micBtn');
     if (live) { mic.textContent = A.running ? 'Stop' : 'Start'; mic.classList.toggle('stop', A.running); }
@@ -1552,14 +1940,656 @@ var RiyaazCore = (function () {
     $('#infoScrim').hidden = false;
   }
 
+  // ------------------------------------------------------------ learn (beginner lessons)
+  var LS = { lesson: null, phase: 'idle', wall0: 0, startStream: null, frames: [], timers: [], voices: [],
+             demo: null, result: null, floorDb: null, soundOn: 0, quietSince: null };
+
+  function lessonById(id) { for (var i = 0; i < C.LESSONS.length; i++) if (C.LESSONS[i].id === id) return C.LESSONS[i]; return null; }
+  function lessonDur(l) { return l.kind === 'breath' || l.kind === 'range' ? l.maxDur : C.lessonPath(l, S.tuning).dur + 0.6; }
+
+  function renderLearnList() {
+    var rec = load('lessons', {}), groups = {};
+    C.LESSONS.forEach(function (l) { (groups[l.group] = groups[l.group] || []).push(l); });
+    var html = '<details class="basics"><summary>Before you start</summary><ul>' +
+      '<li>Sit or stand tall; shoulders and jaw relaxed.</li>' +
+      '<li>Breathe in low — belly and sides expand, shoulders stay still.</li>' +
+      '<li>Sip water; warm up for 5 minutes before singing hard.</li>' +
+      '<li>Sing at an easy volume. Pain, scratching or hoarseness means stop and rest.</li>' +
+      '<li>Hold the phone about an arm\'s length away. Earphones help if the tanpura is on.</li></ul></details>';
+    Object.keys(groups).forEach(function (g) {
+      html += '<h4>' + g + '</h4>';
+      groups[g].forEach(function (l) {
+        var r = rec[l.id], badge = '';
+        if (r && r.best != null) badge = '<span class="badge">best ' + r.best + (l.kind === 'breath' ? ' s' : '%') + '</span>';
+        else if (r) badge = '<span class="badge">done</span>';
+        html += '<button class="lcard" data-id="' + l.id + '"><b>' + l.title + '</b>' + badge + '<span>' + l.goal + '</span></button>';
+      });
+    });
+    $('#learnList').innerHTML = html;
+    $$('#learnList .lcard').forEach(function (b) { b.onclick = function () { openLesson(b.dataset.id); }; });
+  }
+
+  function openLesson(id) {
+    stopLearnActivity();
+    LS.lesson = lessonById(id); LS.phase = 'idle'; LS.frames = []; LS.result = null;
+    var l = LS.lesson;
+    $('#lTitle').textContent = l.title;
+    $('#lGoal').textContent = l.goal;
+    $('#lTips').innerHTML = l.tips.map(function (t) { return '<li>' + t + '</li>'; }).join('');
+    renderLessonStatus(); updateUI();
+  }
+  function closeLesson() { stopLearnActivity(); LS.lesson = null; renderLearnList(); updateUI(); }
+
+  function renderLessonStatus() {
+    var l = LS.lesson, el = $('#lStatus'); if (!l) return;
+    if (LS.phase === 'idle') {
+      var r = load('lessons', {})[l.id];
+      el.innerHTML = '<div class="lhead">Press ▶ Demo to hear it, then Try it.</div>' +
+        (r && r.best != null ? '<div class="note">Your best: ' + r.best + (l.kind === 'breath' ? ' s' : '%') + '</div>' : '');
+    } else if (LS.phase === 'countin') {
+      var first = l.path && l.kind !== 'range' ? l.path.filter(function (p) { return p[0] != null; })[0][0] : null;
+      el.innerHTML = '<div class="lhead">Get ready…</div><div class="note">' +
+        (first != null ? 'Starting note: ' + swHTML(first) + ' (listen)' : 'Start on the last click') + '</div>';
+    } else if (LS.phase === 'run') {
+      el.innerHTML = '<div class="lhead" id="lLive">' + (l.kind === 'breath' ? '0.0 s' : l.kind === 'range' ? 'Slide up and down…' : 'Follow the line') + '</div>';
+    } else if (LS.phase === 'done' && LS.result) {
+      var R = LS.result;
+      el.innerHTML = '<div class="lhead">' + R.headline + '</div><ul class="tips">' +
+        R.tips.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>' +
+        (nextLesson() ? '<div class="lbtns"><button class="sec" id="lNext">Next lesson →</button></div>' : '');
+      if (nextLesson()) $('#lNext').onclick = function () { openLesson(nextLesson().id); };
+    }
+  }
+  function nextLesson() { var i = C.LESSONS.indexOf(LS.lesson); return i >= 0 && i + 1 < C.LESSONS.length ? C.LESSONS[i + 1] : null; }
+
+  // ---- demo voice: a simple formant synthesizer following the lesson's path
+  var FORMANTS = { aa: [[730, 90, 1], [1090, 110, 0.5], [2440, 160, 0.25]], oo: [[300, 60, 1], [870, 90, 0.4], [2240, 160, 0.1]] };
+  function demoVoice(l, t0) {
+    var ctx = A.ctx, nodes = [], out = ctx.createGain();
+    out.gain.value = 0; out.connect(A.demoBus);
+    var f = function (c) { return saHz() * Math.pow(2, c / 1200); };
+    if (l.vowel === 'sss') {
+      var nb = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate), d = nb.getChannelData(0);
+      for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+      var ns = ctx.createBufferSource(); ns.buffer = nb; ns.loop = true;
+      var hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 4000;
+      ns.connect(hp); hp.connect(out);
+      out.gain.setValueAtTime(0, t0); out.gain.linearRampToValueAtTime(0.35, t0 + 0.3);
+      out.gain.setValueAtTime(0.35, t0 + 6.5); out.gain.linearRampToValueAtTime(0, t0 + 7);
+      ns.start(t0); ns.stop(t0 + 7.1); nodes.push(ns);
+      return { dur: 7, stop: function (w) { out.gain.cancelScheduledValues(w); out.gain.setTargetAtTime(0, w, 0.03); nodes.forEach(function (n) { try { n.stop(w + 0.2); } catch (e) {} }); } };
+    }
+    var path = C.lessonPath(l, S.tuning), segs = path.segs;
+    var osc = ctx.createOscillator(); osc.type = 'sawtooth';
+    var firstC = segs.filter(function (s) { return s.c1 != null; })[0].c0;
+    osc.frequency.setValueAtTime(f(firstC), t0);
+    segs.forEach(function (s) {
+      if (s.c1 == null) return;
+      var a = t0 + s.t0, b = t0 + s.t1;
+      if (s.c0 !== s.c1) { osc.frequency.setValueAtTime(f(s.c0), a); osc.frequency.exponentialRampToValueAtTime(f(s.c1), b); }
+      else osc.frequency.setTargetAtTime(f(s.c1), a, 0.025);
+    });
+    var vib = ctx.createOscillator(), vg = ctx.createGain();
+    vib.frequency.value = 5.5; vg.gain.value = f(firstC) * (l.kind === 'hold' || l.kind === 'swell' ? 0.002 : 0.005);
+    vib.connect(vg); vg.connect(osc.frequency);
+    // tone colour
+    var body = ctx.createBiquadFilter(); body.type = 'lowpass'; body.frequency.value = 450; body.Q.value = 0.7;
+    var mix = ctx.createGain();
+    osc.connect(body); var bg = ctx.createGain(); bg.gain.value = l.vowel === 'mm' ? 1.4 : 0.35; body.connect(bg); bg.connect(mix);
+    if (l.vowel !== 'mm') {
+      (FORMANTS[l.vowel === 'trill' ? 'oo' : l.vowel] || FORMANTS.aa).forEach(function (F) {
+        var bp = ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = F[0]; bp.Q.value = F[0] / F[1];
+        var g = ctx.createGain(); g.gain.value = F[2] * 2.2; osc.connect(bp); bp.connect(g); g.connect(mix);
+      });
+    }
+    var am = ctx.createGain(); am.gain.value = 1; mix.connect(am); am.connect(out);
+    var lfo2 = null;
+    if (l.vowel === 'trill') {
+      am.gain.value = 0.55; lfo2 = ctx.createOscillator(); lfo2.frequency.value = 24;
+      var l2g = ctx.createGain(); l2g.gain.value = 0.45; lfo2.connect(l2g); l2g.connect(am.gain);
+    }
+    // loudness
+    var lv = 0.5;
+    if (l.dyn) {
+      out.gain.setValueAtTime(0, t0);
+      l.dyn.forEach(function (p, k) { out.gain.linearRampToValueAtTime(lv * p[1], t0 + Math.max(0.05, p[0])); });
+      out.gain.linearRampToValueAtTime(0, t0 + path.dur + 0.08);
+    } else {
+      segs.forEach(function (s, k) {
+        if (s.c1 == null) return;
+        var a = t0 + s.t0, b = t0 + s.t1, prevOn = k > 0 && segs[k - 1].c1 != null, nextOn = k + 1 < segs.length && segs[k + 1].c1 != null;
+        if (!prevOn) { out.gain.setValueAtTime(0, a); out.gain.linearRampToValueAtTime(lv, a + (l.kind === 'staccato' ? 0.02 : 0.06)); }
+        if (l.kind === 'staccato') out.gain.setTargetAtTime(lv * 0.35, a + 0.05, 0.12);
+        if (!nextOn) { out.gain.setValueAtTime(l.kind === 'staccato' ? lv * 0.3 : lv, b - 0.07); out.gain.linearRampToValueAtTime(0, b); }
+      });
+    }
+    var end = t0 + path.dur + 0.2;
+    osc.start(t0); vib.start(t0); osc.stop(end); vib.stop(end); nodes.push(osc, vib);
+    if (lfo2) { lfo2.start(t0); lfo2.stop(end); nodes.push(lfo2); }
+    return { dur: path.dur, stop: function (w) { out.gain.cancelScheduledValues(w); out.gain.setTargetAtTime(0, w, 0.03); nodes.forEach(function (n) { try { n.stop(w + 0.2); } catch (e) {} }); } };
+  }
+
+  function clickAt(t) {
+    var ctx = A.ctx, n = ctx.createBufferSource(), hp = ctx.createBiquadFilter(), g = ctx.createGain();
+    var b = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.02), ctx.sampleRate), d = b.getChannelData(0);
+    for (var i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    n.buffer = b; hp.type = 'highpass'; hp.frequency.value = 3000; g.gain.value = 0.9;
+    n.connect(hp); hp.connect(g); g.connect(A.beatBus); n.start(t);
+    return { stop: function (w) { try { n.stop(w); } catch (e) {} } };
+  }
+
+  function playDemo() {
+    if (LS.demo) { stopDemo(); return; }
+    if (LS.phase === 'countin' || LS.phase === 'run') return;
+    ensureCtx().then(function () {
+      var t0 = A.ctx.currentTime + 0.15, v = demoVoice(LS.lesson, t0);
+      LS.demo = v; LS.wall0 = performance.now() + 150; LS.phaseBeforeDemo = LS.phase;
+      LS.demoTimer = setTimeout(function () { LS.demo = null; updateUI(); }, (v.dur + 0.4) * 1000);
+      updateUI();
+    });
+  }
+  function stopDemo() {
+    if (!LS.demo) return;
+    LS.demo.stop(A.ctx.currentTime); LS.demo = null; clearTimeout(LS.demoTimer); updateUI();
+  }
+
+  function startTry() {
+    stopDemo(); stopListen(); stopPractice();
+    if (LS.phase === 'countin' || LS.phase === 'run') { abortTry(); return; }
+    var go = function () {
+      var l = LS.lesson, ctx = A.ctx, now = ctx.currentTime;
+      var pitched = l.path && l.kind !== 'range';
+      var lead = pitched ? 3.2 : 2.1;
+      if (pitched) {
+        var first = l.path.filter(function (p) { return p[0] != null; })[0][0];
+        LS.voices.push(toneAt(first, now + 0.1, 1.0));
+      }
+      [lead - 1.8, lead - 1.2, lead - 0.6].forEach(function (k) { LS.voices.push(clickAt(now + k)); });
+      LS.wall0 = performance.now() + lead * 1000;
+      LS.startStream = null; LS.frames = []; LS.result = null; LS.floorDb = null; LS.soundOn = 0; LS.quietSince = null;
+      LS.phase = 'countin'; renderLessonStatus(); updateUI();
+      LS.timers.push(setTimeout(function () { if (LS.phase === 'countin') { LS.phase = 'run'; renderLessonStatus(); updateUI(); } }, lead * 1000));
+      LS.timers.push(setTimeout(finishTry, (lead + lessonDur(l)) * 1000 + 150));
+    };
+    if (A.running) go(); else startMic().then(go).catch(function () {});
+  }
+
+  function learnFrame(r, cents) {
+    if (LS.phase !== 'countin' && LS.phase !== 'run') return;
+    if (LS.startStream === null) LS.startStream = r.t + (LS.wall0 - performance.now()) / 1000;
+    var f = { t: r.t - LS.startStream, c: cents, db: 20 * Math.log10(Math.max(r.rms, 1e-7)) };
+    LS.frames.push(f);
+    var l = LS.lesson;
+    if (l.kind === 'breath' && f.t >= 0) {
+      if (LS.floorDb === null) {
+        var pre = LS.frames.filter(function (x) { return x.t < -0.2; }).map(function (x) { return x.db; }).sort(function (a, b) { return a - b; });
+        LS.floorDb = pre.length ? pre[Math.floor(pre.length / 2)] : -70;
+      }
+      var thr = Math.max(LS.floorDb + 12, -75);
+      if (f.db > thr) { LS.soundOn += 0.01; LS.quietSince = null; }
+      else if (LS.soundOn > 1 && LS.quietSince === null) LS.quietSince = f.t;
+      var el = $('#lLive');
+      if (el) el.textContent = (LS.quietSince === null ? LS.soundOn : LS.soundOn).toFixed(1) + ' s';
+      if (LS.quietSince !== null && f.t - LS.quietSince > 1.5) finishTry();   // stopped hissing
+    }
+    if (l.kind === 'range' && f.t >= 0) { var e2 = $('#lLive'); if (e2) e2.textContent = 'Slide up and down… ' + Math.max(0, Math.ceil(l.maxDur - f.t)) + ' s'; }
+  }
+
+  function finishTry() {
+    if (LS.phase !== 'run' && LS.phase !== 'countin') return;
+    var l = LS.lesson, dur = lessonDur(l);
+    if (LS.floorDb === null) {
+      var pre = LS.frames.filter(function (x) { return x.t < -0.2; }).map(function (x) { return x.db; }).sort(function (a, b) { return a - b; });
+      LS.floorDb = pre.length ? pre[Math.floor(pre.length / 2)] : null;
+    }
+    var fr = LS.frames.filter(function (f) { return f.t >= 0 && f.t <= dur; });
+    LS.result = C.scoreLesson(l, fr, { tuning: S.tuning, floorDb: LS.floorDb });
+    LS.phase = 'done';
+    LS.timers.forEach(clearTimeout); LS.timers = [];
+    var rec = load('lessons', {}), old = rec[l.id] || {};
+    var val = l.kind === 'breath' ? Math.round(LS.result.stats.seconds || 0) : LS.result.score;
+    rec[l.id] = { best: val == null ? old.best : Math.max(old.best || 0, val), last: val, at: Date.now() };
+    store('lessons', rec);
+    if (l.kind === 'range' && LS.result.stats.low != null) store('range', { low: LS.result.stats.low, high: LS.result.stats.high, saHz: saHz(), at: Date.now() });
+    renderLessonStatus(); updateUI();
+  }
+
+  function abortTry() {
+    LS.timers.forEach(clearTimeout); LS.timers = [];
+    if (A.ctx) LS.voices.forEach(function (v) { try { v.stop ? v.stop(A.ctx.currentTime) : v.o.stop(A.ctx.currentTime); } catch (e) {} });
+    LS.voices = []; LS.phase = 'idle'; LS.frames = []; renderLessonStatus(); updateUI();
+  }
+
+  function stopLearnActivity() { stopDemo(); if (LS.phase === 'countin' || LS.phase === 'run') abortTry(); }
+
+  // ---- drawing: the whole exercise fits on screen; a cursor sweeps across it
+  function drawLearn(W, Hh) {
+    var l = LS.lesson; if (!l) return;
+    var dur = l.kind === 'breath' ? l.maxDur : l.kind === 'range' ? l.maxDur : C.lessonPath(l, S.tuning).dur;
+    var tMin = -0.3, tMax = dur + 0.5, L0 = 56, xw = W - L0 - 12;
+    var xOf = function (t) { return L0 + (t - tMin) / (tMax - tMin) * xw; };
+    var running = LS.phase === 'countin' || LS.phase === 'run';
+    var cursor = LS.demo || running ? (performance.now() - LS.wall0) / 1000 : null;
+
+    if (l.kind === 'breath') {
+      var fl = LS.floorDb != null ? LS.floorDb : -70, yDb = function (db) { return Hh - 14 - (db - (fl - 3)) / 50 * (Hh * 0.75); };
+      g2.strokeStyle = 'rgba(245,158,11,.5)'; g2.setLineDash([4, 5]); g2.beginPath();
+      var ty = yDb(fl + 12); g2.moveTo(L0, ty); g2.lineTo(W, ty); g2.stroke(); g2.setLineDash([]);
+      g2.fillStyle = '#a8998b'; g2.font = '12px system-ui'; g2.textBaseline = 'bottom'; g2.fillText('sound', 8, ty - 2);
+      for (var s = 0; s <= dur; s += 5) { var gx = xOf(s); g2.fillStyle = '#6d6157'; g2.fillText(s + 's', gx - 6, Hh - 2); }
+      g2.beginPath(); var started = false;
+      LS.frames.forEach(function (f) { if (f.t < tMin || f.t > tMax) return; var x = xOf(f.t), y = yDb(f.db); if (!started) { g2.moveTo(x, y); started = true; } else g2.lineTo(x, y); });
+      g2.strokeStyle = '#4ade80'; g2.lineWidth = 2; g2.stroke();
+    } else {
+      var path = C.lessonPath(l, S.tuning), cs = path.segs.filter(function (s) { return s.c1 != null; }).reduce(function (a, s) { return a.concat([s.c0, s.c1]); }, []);
+      var lo = Math.min.apply(null, cs), hi = Math.max.apply(null, cs);
+      var pad = l.kind === 'range' ? 250 : 220;
+      var px = Math.max(14, Math.min(44, Hh / ((hi - lo + 2 * pad) / 100)));
+      var mid = (lo + hi) / 2, yOf = function (c) { return Hh / 2 - (c - mid) / 100 * px; };
+      // swara grid
+      var tun = C.TUNING[S.tuning], cTop = mid + Hh / 2 / px * 100, cBot = mid - Hh / 2 / px * 100;
+      for (var o = Math.floor(cBot / 1200) - 1; o <= Math.ceil(cTop / 1200); o++) for (var dg = 0; dg < 12; dg++) {
+        var c = o * 1200 + tun[dg]; if (c < cBot || c > cTop) continue;
+        var shud = [0, 2, 4, 5, 7, 9, 11].indexOf(dg) >= 0;
+        if (!shud && px < 26) continue;
+        var y = Math.round(yOf(c)) + 0.5;
+        g2.strokeStyle = dg === 0 ? 'rgba(245,158,11,.55)' : shud ? 'rgba(244,237,229,.18)' : 'rgba(244,237,229,.06)';
+        g2.lineWidth = dg === 0 ? 1.5 : 1; g2.beginPath(); g2.moveTo(L0, y); g2.lineTo(W, y); g2.stroke();
+        if (shud) drawLabel(o * 12 + dg, 10, y, dg === 0 ? '#f59e0b' : '#d8cbbd', px < 22 ? 11 : 13);
+      }
+      // guide line
+      var band = (l.tol || 35) / 100 * px;
+      path.segs.forEach(function (sg) {
+        if (sg.c1 == null) return;
+        var x1 = xOf(sg.t0), x2 = xOf(sg.t1), y1 = yOf(sg.c0), y2 = yOf(sg.c1);
+        if (l.kind !== 'range') {
+          g2.fillStyle = 'rgba(74,222,128,.13)'; g2.beginPath();
+          g2.moveTo(x1, y1 - band); g2.lineTo(x2, y2 - band); g2.lineTo(x2, y2 + band); g2.lineTo(x1, y1 + band); g2.closePath(); g2.fill();
+        }
+        g2.strokeStyle = l.kind === 'range' ? 'rgba(74,222,128,.35)' : 'rgba(74,222,128,.75)'; g2.lineWidth = 2;
+        if (l.kind === 'range') g2.setLineDash([5, 6]);
+        g2.beginPath(); g2.moveTo(x1, y1); g2.lineTo(x2, y2); g2.stroke(); g2.setLineDash([]);
+      });
+      // your voice
+      g2.lineWidth = 3; g2.lineCap = 'round';
+      var prev = null;
+      LS.frames.forEach(function (f) {
+        if (f.t < tMin || f.t > tMax || f.c == null) { prev = null; return; }
+        var x = xOf(f.t), yy = yOf(f.c), T = C.pathAt(path, f.t);
+        var col = l.kind === 'range' || T == null ? '#e8dccd' : devColor(Math.abs(f.c - T) <= (l.tol || 35) ? Math.min(10, Math.abs(f.c - T)) : 99);
+        if (prev && Math.abs(prev.c - f.c) < 150) { g2.strokeStyle = col; g2.beginPath(); g2.moveTo(prev.x, prev.y); g2.lineTo(x, yy); g2.stroke(); }
+        prev = { x: x, y: yy, c: f.c };
+      });
+      if (LS.phase === 'done' && l.kind === 'range' && LS.result && LS.result.stats.low != null) {
+        [LS.result.stats.low, LS.result.stats.high].forEach(function (c) {
+          var y = yOf(c); g2.strokeStyle = '#fbbf24'; g2.lineWidth = 1.5; g2.setLineDash([2, 4]);
+          g2.beginPath(); g2.moveTo(L0, y); g2.lineTo(W, y); g2.stroke(); g2.setLineDash([]);
+        });
+      }
+    }
+    if (cursor != null && cursor > tMin && cursor < tMax) {
+      var cx = xOf(cursor); g2.strokeStyle = 'rgba(255,255,255,.55)'; g2.lineWidth = 1.5;
+      g2.beginPath(); g2.moveTo(cx, 0); g2.lineTo(cx, Hh); g2.stroke();
+    }
+    if (LS.phase === 'countin' && cursor != null && cursor < 0) {
+      g2.fillStyle = '#fbbf24'; g2.font = '700 44px system-ui'; g2.textAlign = 'center'; g2.textBaseline = 'middle';
+      if (-cursor <= 1.8) g2.fillText(String(Math.max(1, Math.ceil(-cursor / 0.6))), W / 2, Hh / 2);
+      g2.textAlign = 'left';
+    }
+  }
+
+  // ------------------------------------------------------------ theory tab
+  var TH = { topic: null, voices: [], timers: [], taal: null };
+
+  function freqTone(f, t, dur, gain) {
+    var h = toneAt(0, t, dur, f); if (gain != null) h.g.gain.value = gain; return h;
+  }
+  function thStop() {
+    TH.timers.forEach(clearTimeout); TH.timers = [];
+    if (A.ctx) TH.voices.forEach(function (v) {
+      try { v.g.gain.cancelScheduledValues(A.ctx.currentTime); v.g.gain.setTargetAtTime(0, A.ctx.currentTime, 0.02); } catch (e) {}
+      try { v.stop ? v.stop(A.ctx.currentTime + 0.1) : v.o.stop(A.ctx.currentTime + 0.1); } catch (e) {}
+    });
+    TH.voices = [];
+    if (TH.taal) TH.taal.stop();
+  }
+  // play a list of frequencies (or arrays of frequencies = chords) one after another
+  function thPlay(list, dt, onNote) {
+    thStop();
+    return ensureCtx().then(function () {
+      var t0 = A.ctx.currentTime + 0.05;
+      list.forEach(function (item, i) {
+        var fs = Array.isArray(item) ? item : [item], t = t0 + i * dt;
+        fs.forEach(function (f) { TH.voices.push(toneAt(0, t, Math.max(0.3, dt * (Array.isArray(item) ? 1 : 0.92)), f)); });
+        if (onNote) TH.timers.push(setTimeout(function () { onNote(i); }, (t - A.ctx.currentTime) * 1000));
+      });
+    });
+  }
+  function stepHz(step, tuning) { return saHz() * Math.pow(2, C.stepCents(step, tuning || S.tuning) / 1200); }
+
+  // ---- a 2-octave keyboard starting at C of your Sa's octave
+  function piano() {
+    var el = document.createElement('div'); el.className = 'piano';
+    var BLK = [1, 3, 6, 8, 10], ww = 100 / 14, keys = [], wi = 0;
+    for (var i = 0; i < 24; i++) {
+      var n = i % 12, black = BLK.indexOf(n) >= 0, k = document.createElement('div');
+      k.className = 'key ' + (black ? 'black' : 'white');
+      if (black) { k.style.left = (wi * ww - ww * 0.31) + '%'; k.style.width = (ww * 0.62) + '%'; }
+      else { k.style.left = (wi * ww) + '%'; k.style.width = ww + '%'; wi++; }
+      k.innerHTML = '<span></span>';
+      (function (idx) { k.onclick = function () { el.tap(idx); }; })(i);
+      keys.push(k);
+    }
+    keys.filter(function (k) { return k.classList.contains('white'); }).concat(keys.filter(function (k) { return k.classList.contains('black'); })).forEach(function (k) { el.appendChild(k); });
+    el.keyHz = function (i) { return C.noteFreq(i % 12, S.octave + Math.floor(i / 12)); };
+    el.tap = function (i) { el.flash(i); thPlay([el.keyHz(i)], 0.7); };
+    el.flash = function (i) { var k = keys[i]; if (!k) return; k.classList.add('hit'); setTimeout(function () { k.classList.remove('hit'); }, 350); };
+    // marks: offsets from sa to highlight; label: 'western' | 'swara'
+    el.show = function (sa, marks, label) {
+      keys.forEach(function (k, i) {
+        var off = i - sa, on = marks ? marks.indexOf(off) >= 0 : false;
+        k.classList.toggle('on', on); k.classList.toggle('sa', on && (off === 0 || off === 12));
+        var sp = k.firstChild;
+        if (label === 'western') sp.textContent = C.NOTE_NAMES[i % 12];
+        else sp.innerHTML = on ? swHTML(off) : '';
+      });
+    };
+    el.playOffsets = function (sa, offs, dt) {
+      return thPlay(offs.map(function (o) { return el.keyHz(sa + o); }), dt || 0.42, function (j) { el.flash(sa + offs[j]); });
+    };
+    return el;
+  }
+
+  function btn(label, fn, cls) { var b = document.createElement('button'); b.className = cls || 'sec sm'; b.innerHTML = label; b.onclick = fn; return b; }
+  function row() { var d = document.createElement('div'); d.className = 'trow'; for (var i = 0; i < arguments.length; i++) d.appendChild(arguments[i]); return d; }
+  function para(html) { var d = document.createElement('div'); d.className = 'tx'; d.innerHTML = html; return d; }
+  function sw(step) { return swHTML(step); }
+  var SHUDDHA = [0, 2, 4, 5, 7, 9, 11, 12];
+
+  var TOPICS = [
+    { id: 'pitch', title: 'Pitch & the octave', sub: 'High and low notes, and why upper Sa sounds like Sa.',
+      build: function (box) {
+        var f = saHz();
+        box.appendChild(para('<p><b>Pitch</b> is how high or low a sound is. It\'s measured in <b>hertz (Hz)</b>: vibrations per second.</p>' +
+          '<p>Double the vibrations and you get the <b>same note, one octave higher</b>. That\'s why upper Sa still sounds like Sa.</p>'));
+        box.appendChild(row(
+          btn('▶ Sa · ' + f.toFixed(0) + ' Hz', function () { thPlay([f], 1.2); }),
+          btn('▶ Upper Sa · ' + (2 * f).toFixed(0) + ' Hz', function () { thPlay([2 * f], 1.2); }),
+          btn('▶ Both together', function () { thPlay([[f, 2 * f]], 1.8); })));
+        box.appendChild(para('<p class="note">Played together, the two melt into one sound — that\'s the octave.</p>'));
+      },
+      quiz: [{ q: 'Upper Sa vibrates … as fast as Sa.', o: ['the same', 'twice', 'three times'], a: 1 },
+             { q: 'Is upper Sa the same swara as Sa?', o: ['Yes — same swara, one octave higher', 'No — it\'s a different swara'], a: 0 }] },
+
+    { id: 'twelve', title: 'The 12 notes', sub: 'Semitones, tones, and the piano keyboard.',
+      build: function (box) {
+        box.appendChild(para('<p>An octave is split into <b>12 notes</b>. Neighbouring notes are a <b>semitone</b> apart; two semitones make a <b>tone</b>.</p>' +
+          '<p>On a piano they repeat as 7 white keys (C D E F G A B) and 5 black keys, the sharps (#) — e.g. C# is between C and D.</p>'));
+        var p = piano(); p.show(0, null, 'western'); box.appendChild(p);
+        box.appendChild(row(btn('▶ All 12, one by one', function () { p.playOffsets(0, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 0.32); })));
+        box.appendChild(para('<p class="note">Tap any key to hear it.</p>'));
+      },
+      quiz: [{ q: 'How many semitones are in one octave?', o: ['7', '8', '12'], a: 2 },
+             { q: 'From C to D is…', o: ['a semitone', 'a tone (2 semitones)'], a: 1 }] },
+
+    { id: 'keys', title: 'Sa and the key (scale)', sub: 'Your Sa can be any note — that choice is the key.',
+      build: function (box) {
+        box.appendChild(para('<p>In Indian music <b>Sa can be any of the 12 notes</b>. You pick the one that suits your voice; that choice is the <b>key</b> (people also call it the "scale").</p>' +
+          '<p>Move Sa and every swara moves with it — the distances between swaras stay the same.</p>'));
+        var sel = S.note, grid = document.createElement('div'); grid.className = 'notes small';
+        var p = piano(), info = para('');
+        function upd() {
+          p.show(sel, SHUDDHA, 'swara');
+          info.innerHTML = '<p>Sa = <b>' + C.NOTE_NAMES[sel] + '</b> (harmonium: ' + C.HARMONIUM_NAMES[sel] + ') · Pa = <b>' + C.NOTE_NAMES[(sel + 7) % 12] + '</b></p>';
+          $$('.notes.small button').forEach(function (b) { b.classList.toggle('on', +b.dataset.v === sel); });
+          mine.disabled = sel === S.note; mine.textContent = sel === S.note ? 'This is your Sa' : 'Make ' + C.NOTE_NAMES[sel] + ' my Sa';
+        }
+        C.NOTE_NAMES.forEach(function (n, i) { var b = btn(n, function () { sel = i; upd(); }, ''); b.dataset.v = i; grid.appendChild(b); });
+        var mine = btn('', function () { S.note = sel; save(); $('#saHz').textContent = saHz().toFixed(1) + ' Hz'; buildSettings(); restartTanpuraIfOn(); updateUI(); upd(); });
+        box.appendChild(grid); box.appendChild(p); box.appendChild(info);
+        box.appendChild(row(btn('▶ Sa Re Ga Ma Pa Dha Ni Sa', function () { p.playOffsets(sel, SHUDDHA); }), mine));
+        box.appendChild(para('<p class="note">On a harmonium: white keys are "Safed", black keys "Kali". Safed 1 = C, Kali 1 = C#, Safed 5 = G, and so on.</p>'));
+        upd();
+      },
+      quiz: [{ q: 'If Sa is D, which note is Pa?', o: ['G', 'A', 'F#'], a: 1 },
+             { q: '"Kali 2" on a harmonium means Sa is…', o: ['D', 'D#', 'E'], a: 1 }] },
+
+    { id: 'swaras', title: 'Swaras: shuddha, komal, tivra', sub: 'The seven swaras and their flat and sharp forms.',
+      build: function (box) {
+        box.appendChild(para('<p>The seven swaras: <b>Sa Re Ga Ma Pa Dha Ni</b>. Sa and Pa never change (<i>achal</i>).</p><ul>' +
+          '<li><b>Komal</b> = one semitone lower: ' + sw(1) + ' ' + sw(3) + ' ' + sw(8) + ' ' + sw(10) + ' (written underlined).</li>' +
+          '<li><b>Tivra</b> = one semitone higher: only ' + sw(6) + ' (mark above).</li></ul>' +
+          '<p>7 shuddha + 4 komal + 1 tivra = all 12 notes.</p>'));
+        var p = piano(); box.appendChild(p);
+        var all = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        p.show(S.note, SHUDDHA, 'swara');
+        box.appendChild(row(
+          btn('▶ Shuddha', function () { p.show(S.note, SHUDDHA, 'swara'); p.playOffsets(S.note, SHUDDHA); }),
+          btn('▶ All 12', function () { p.show(S.note, all, 'swara'); p.playOffsets(S.note, all, 0.36); }),
+          btn('▶ Ga vs komal Ga', function () { p.show(S.note, [0, 3, 4], 'swara'); p.playOffsets(S.note, [0, 4, 0, 3], 0.7); })));
+        box.appendChild(para('<p class="note">The keyboard uses your Sa (' + C.NOTE_NAMES[S.note] + '). Tap keys to hear them.</p>'));
+      },
+      quiz: [{ q: 'Which two swaras never change?', o: ['Sa and Pa', 'Re and Dha', 'Ga and Ni'], a: 0 },
+             { q: 'Which swara can be tivra?', o: ['Re', 'Ma', 'Ni'], a: 1 }] },
+
+    { id: 'saptak', title: 'Saptak: three octaves', sub: 'Mandra, madhya and taar — and the dots.',
+      build: function (box) {
+        box.appendChild(para('<p>A <b>saptak</b> is one set of seven swaras. Singers mostly use three:</p><ul>' +
+          '<li><b>Mandra</b> (lower) — dot below: ' + sw(-5) + ' ' + sw(-3) + ' ' + sw(-1) + '</li>' +
+          '<li><b>Madhya</b> (middle) — no dot: ' + sw(0) + ' ' + sw(2) + ' ' + sw(4) + '</li>' +
+          '<li><b>Taar</b> (upper) — dot above: ' + sw(12) + ' ' + sw(14) + ' ' + sw(16) + '</li></ul>' +
+          '<p>Most singing happens in madhya, dipping into mandra and the lower part of taar.</p>'));
+        box.appendChild(row(btn('▶ Mandra Sa', function () { thPlay([stepHz(-12)], 1); }), btn('▶ Madhya Sa', function () { thPlay([stepHz(0)], 1); }), btn('▶ Taar Sa', function () { thPlay([stepHz(12)], 1); })));
+        box.appendChild(row(btn('▶ Pa in all three', function () { thPlay([stepHz(-5), stepHz(7), stepHz(19)], 0.8); }), btn('▶ Mandra Pa up to taar Sa', function () {
+          thPlay([-5, -3, -1, 0, 2, 4, 5, 7, 9, 11, 12].map(function (s) { return stepHz(s); }), 0.36); })));
+      },
+      quiz: [{ q: 'A dot above a swara means…', o: ['lower octave', 'upper octave', 'komal'], a: 1 },
+             { q: 'Mandra saptak is…', o: ['the lower octave', 'the middle octave', 'the upper octave'], a: 0 }] },
+
+    { id: 'majmin', title: 'Major and minor', sub: 'The two best-known Western scales, in swaras — plus an ear test.',
+      build: function (box) {
+        box.appendChild(para('<p>Western music names scales by their pattern of <b>T</b>ones and <b>S</b>emitones:</p><ul>' +
+          '<li><b>Major</b>: T T S T T T S = <b>Bilawal</b> thaat (all shuddha). Bright.</li>' +
+          '<li><b>Natural minor</b>: T S T T S T T = <b>Asavari</b> thaat (komal ' + sw(3) + ', ' + sw(8) + ', ' + sw(10) + '). Darker.</li></ul>' +
+          '<p>The biggest difference is Ga: shuddha Ga makes it major, komal Ga makes it minor.</p>'));
+        var p = piano(), MAJ = SHUDDHA, MIN = [0, 2, 3, 5, 7, 8, 10, 12];
+        p.show(S.note, MAJ, 'swara'); box.appendChild(p);
+        box.appendChild(row(btn('▶ Major', function () { p.show(S.note, MAJ, 'swara'); p.playOffsets(S.note, MAJ); }),
+                            btn('▶ Minor', function () { p.show(S.note, MIN, 'swara'); p.playOffsets(S.note, MIN); })));
+        box.appendChild(row(btn('▶ Sa + Ga (major)', function () { thPlay([[stepHz(0), stepHz(4)]], 1.6); }),
+                            btn('▶ Sa + komal Ga (minor)', function () { thPlay([[stepHz(0), stepHz(3)]], 1.6); })));
+        // ear test
+        var ear = document.createElement('div'); ear.className = 'ear';
+        var right = 0, tries = 0, cur = null;
+        ear.innerHTML = '<b>Ear test: major or minor?</b><div class="trow"></div><div class="note ear-res">Press play, then choose.</div>';
+        var r = ear.querySelector('.trow'), res = ear.querySelector('.ear-res');
+        var play = btn('▶ Mystery scale', function () {
+          if (cur === null) cur = Math.random() < 0.5 ? 'major' : 'minor';
+          var shape = Math.random() < 0.5 ? [0, 1, 2, 3, 4, 5, 6, 7] : [7, 6, 5, 4, 3, 2, 1, 0];
+          var sc = cur === 'major' ? MAJ : MIN;
+          p.show(S.note, null, 'swara');
+          p.playOffsets(S.note, shape.map(function (k) { return sc[k]; }), 0.34);
+        });
+        function guess(g) {
+          if (cur === null) { res.textContent = 'Press play first.'; return; }
+          tries++; if (g === cur) right++;
+          res.innerHTML = (g === cur ? '✅ Yes — ' : '❌ It was ') + cur + '. Score: ' + right + ' / ' + tries + '. Play another!';
+          p.show(S.note, cur === 'major' ? MAJ : MIN, 'swara'); cur = null;
+        }
+        r.appendChild(play); r.appendChild(btn('Major', function () { guess('major'); })); r.appendChild(btn('Minor', function () { guess('minor'); }));
+        box.appendChild(ear);
+      },
+      quiz: [{ q: 'The natural minor scale is which thaat?', o: ['Bilawal', 'Asavari', 'Kalyan'], a: 1 },
+             { q: 'The major scale is which thaat?', o: ['Bilawal', 'Bhairav', 'Kafi'], a: 0 }] },
+
+    { id: 'thaat', title: 'Thaats (parent scales)', sub: 'The 10 scales that raags are grouped under.',
+      build: function (box) {
+        box.appendChild(para('<p>A <b>thaat</b> is a parent scale: seven swaras in order, always with Sa and Pa. Pandit V. N. Bhatkhande grouped raags under <b>10 thaats</b>.</p>'));
+        var pick = document.createElement('div'); pick.className = 'opts wrap';
+        var p = piano(), info = para(''), cur = C.THAATS[0];
+        function upd() {
+          p.show(S.note, cur.steps.concat([12]), 'swara');
+          info.innerHTML = '<p><b>' + cur.name + '</b>: ' + cur.steps.concat([12]).map(sw).join(' ') + '</p>' +
+            '<p class="note">Western name: ' + (cur.western || 'no common Western name') + '<br>Raags: ' + cur.raags + '</p>';
+          $$('.opts.wrap button').forEach(function (b) { b.classList.toggle('on', b.dataset.v === cur.id); });
+        }
+        C.THAATS.forEach(function (t) { var b = btn(t.name, function () { cur = t; upd(); p.playOffsets(S.note, t.steps.concat([12]), 0.32); }, ''); b.dataset.v = t.id; pick.appendChild(b); });
+        box.appendChild(pick); box.appendChild(p); box.appendChild(info);
+        box.appendChild(row(btn('▶ Play', function () { p.playOffsets(S.note, cur.steps.concat([12])); })));
+        upd();
+      },
+      quiz: [{ q: 'Raag Yaman belongs to which thaat?', o: ['Kalyan', 'Bilawal', 'Kafi'], a: 0 },
+             { q: 'How many thaats did Bhatkhande describe?', o: ['7', '10', '12'], a: 1 }] },
+
+    { id: 'raag', title: 'What makes a raag', sub: 'More than a scale: movement, important notes, a signature phrase.',
+      build: function (box) {
+        box.appendChild(para('<p>A thaat is just a scale. A <b>raag</b> is a melodic framework with its own rules:</p><ul>' +
+          '<li><b>Aroha / avaroha</b> — the way up and the way down (may skip or zig-zag).</li>' +
+          '<li><b>Vadi / samvadi</b> — the most important and second most important swaras.</li>' +
+          '<li><b>Pakad</b> — a short phrase that identifies the raag.</li>' +
+          '<li><b>Jaati</b> — how many swaras: 5 (audav), 6 (shadav) or 7 (sampoorna).</li>' +
+          '<li>A time of day and a mood.</li></ul>'));
+        var pick = document.createElement('div'); pick.className = 'opts wrap';
+        var info = para(''), cur = raag() || C.RAAGS[0];
+        function upd() {
+          var th = C.THAATS.filter(function (t) { return t.name === cur.thaat; })[0];
+          var used = C.raagAllowed(cur).reduce(function (a, on, i) { return on ? a.concat([i]) : a; }, []);
+          info.innerHTML = '<p><b>' + cur.name + '</b> · ' + cur.thaat + ' thaat · ' + cur.time + '<br>Swaras used: ' + used.map(sw).join(' ') +
+            (used.length === 5 ? ' (5 — audav)' : '') + '<br>Vadi ' + cur.vadi + ', samvadi ' + cur.samvadi + '</p>';
+          $$('#theoryTopic .opts.wrap button').forEach(function (b) { b.classList.toggle('on', b.dataset.v === cur.id); });
+          box._th = th;
+        }
+        C.RAAGS.forEach(function (r) { var b = btn(r.name, function () { cur = r; upd(); }, ''); b.dataset.v = r.id; pick.appendChild(b); });
+        box.appendChild(pick); box.appendChild(info);
+        var hz = function (a) { return a.map(function (s) { return stepHz(s); }); };
+        box.appendChild(row(
+          btn('▶ Its thaat (plain scale)', function () { thPlay(hz(box._th.steps.concat([12])), 0.4); }),
+          btn('▶ Aroha + avaroha', function () { thPlay(hz(C.exerciseSequence(cur, 'both')), 0.45); }),
+          btn('▶ Pakad', function () { thPlay(hz(cur.pakad), 0.5); })));
+        box.appendChild(row(btn('Practice this raag →', function () {
+          thStop(); S.raag = cur.id; allowed = C.raagAllowed(cur); $('#raagSel').value = cur.id; S.tab = 'practice'; save(); buildPractice(); updateUI(); }, 'sec sm accent')));
+        box.appendChild(para('<p class="note">Compare the plain thaat with the pakad: same swaras, very different character.</p>'));
+        upd();
+      },
+      quiz: [{ q: 'Raag Bhopali uses how many swaras?', o: ['5', '6', '7'], a: 0 },
+             { q: 'The vadi of a raag is…', o: ['its most important swara', 'the first note sung', 'the tanpura note'], a: 0 }] },
+
+    { id: 'tuning', title: 'Consonance, tanpura & tuning', sub: 'Why the tanpura plays Sa and Pa, and what cents are.',
+      build: function (box) {
+        box.appendChild(para('<p>Some pairs of notes blend smoothly: Sa–upper Sa (octave), <b>Sa–Pa</b> (a fifth, ratio 3:2) and <b>Sa–Ma</b> (a fourth, 4:3). That\'s why the tanpura plays Sa with Pa, or with Ma.</p>' +
+          '<p>Small pitch differences are measured in <b>cents</b>: 100 cents = 1 semitone. A harmonium uses 12 equal steps; with a tanpura, Ga, Dha and Ni naturally sit a little lower — Ga by about 14 cents.</p>'));
+        box.appendChild(row(btn('▶ Sa + Pa', function () { thPlay([[stepHz(0, 'just'), stepHz(7, 'just')]], 2); }),
+                            btn('▶ Sa + Ma', function () { thPlay([[stepHz(0, 'just'), stepHz(5, 'just')]], 2); }),
+                            btn('▶ Sa + komal Re (clash)', function () { thPlay([[stepHz(0, 'just'), stepHz(1, 'just')]], 2); })));
+        box.appendChild(para('<p><b>Listen closely:</b> the harmonium Ga wobbles (beats) faster against Sa than the natural Ga.</p>'));
+        box.appendChild(row(btn('▶ Sa + Ga, natural', function () { thPlay([[stepHz(0, 'just'), stepHz(4, 'just')]], 3); }),
+                            btn('▶ Sa + Ga, harmonium', function () { thPlay([[stepHz(0, 'equal'), stepHz(4, 'equal')]], 3); })));
+        box.appendChild(row(btn('Choose tuning in Settings', function () { $('#setScrim').hidden = false; }, 'sec sm accent')));
+      },
+      quiz: [{ q: '100 cents equals…', o: ['one semitone', 'one octave', 'one tone'], a: 0 },
+             { q: 'Sa–Pa is called…', o: ['a fifth', 'an octave', 'a semitone'], a: 0 }] },
+
+    { id: 'taal', title: 'Taal (rhythm cycles)', sub: 'Beats, cycles, sam and khali — with a tabla player.',
+      build: function (box) {
+        box.appendChild(para('<p>A <b>taal</b> is a repeating cycle of beats (<b>matras</b>), split into sections (<b>vibhag</b>).</p><ul>' +
+          '<li><b>Sam (X)</b> — beat 1, the strongest. Phrases land here.</li>' +
+          '<li><b>Taali</b> (2, 3…) — a clap.</li>' +
+          '<li><b>Khali (0)</b> — a wave of the hand; the tabla drops its bass.</li></ul>'));
+        var pick = document.createElement('div'); pick.className = 'opts wrap';
+        var grid = document.createElement('div'); grid.className = 'taal';
+        var cur = C.TAALS[0], bpm = 80, playing = false, timer = null, next = 0, beat = 0, cells = [];
+        function draw() {
+          grid.innerHTML = ''; cells = []; var b = 0;
+          cur.vibhag.forEach(function (n, v) {
+            var r = document.createElement('div'); r.className = 'vib';
+            r.innerHTML = '<span class="mk">' + cur.marks[v] + '</span>';
+            for (var k = 0; k < n; k++, b++) { var c = document.createElement('span'); c.className = 'cell'; c.innerHTML = '<small>' + (b + 1) + '</small>' + cur.bols[b]; r.appendChild(c); cells.push(c); }
+            grid.appendChild(r);
+          });
+          $$('#theoryTopic .opts.wrap button').forEach(function (x) { x.classList.toggle('on', x.dataset.v === cur.id); });
+        }
+        function vibOf(i) { var s = 0; for (var v = 0; v < cur.vibhag.length; v++) { s += cur.vibhag[v]; if (i < s) return v; } return 0; }
+        function sched() {
+          var ctx = A.ctx;
+          while (next < ctx.currentTime + 0.15) {
+            var i = beat % cur.bols.length, bol = cur.bols[i], khali = cur.marks[vibOf(i)] === '0';
+            TH.voices.push(beatAt(next, /^(Dh|Ge)/.test(bol) && !khali, khali));
+            if (i === 0) TH.voices.push(clickAt(next));
+            (function (ii, t) { TH.timers.push(setTimeout(function () { cells.forEach(function (c, j) { c.classList.toggle('now', j === ii); }); }, (t - ctx.currentTime) * 1000)); })(i, next);
+            next += 60 / bpm; beat++;
+          }
+          if (TH.voices.length > 64) TH.voices.splice(0, TH.voices.length - 64);
+          if (TH.timers.length > 64) TH.timers.splice(0, TH.timers.length - 64);
+        }
+        var playB = btn('▶ Play', function () {
+          if (playing) { stop(); return; }
+          thStop(); ensureCtx().then(function () { playing = true; beat = 0; next = A.ctx.currentTime + 0.1; sched(); timer = setInterval(sched, 40); playB.textContent = '■ Stop'; });
+        });
+        function stop() { playing = false; clearInterval(timer); playB.textContent = '▶ Play'; cells.forEach(function (c) { c.classList.remove('now'); }); }
+        TH.taal = { stop: stop };
+        C.TAALS.forEach(function (t) { var b = btn(t.name + ' · ' + t.bols.length, function () { cur = t; beat = 0; draw(); }, ''); b.dataset.v = t.id; pick.appendChild(b); });
+        var sp = document.createElement('div'); sp.className = 'row';
+        sp.innerHTML = '<label>Speed</label><input type="range" min="40" max="160" step="1" value="80"><output>80 bpm</output>';
+        sp.querySelector('input').oninput = function () { bpm = +this.value; sp.querySelector('output').textContent = bpm + ' bpm'; };
+        box.appendChild(pick); box.appendChild(grid); box.appendChild(row(playB)); box.appendChild(sp);
+        draw();
+      },
+      quiz: [{ q: 'How many beats are in Teentaal?', o: ['8', '12', '16'], a: 2 },
+             { q: 'Khali is marked with…', o: ['X', '0', '2'], a: 1 }] }
+  ];
+
+  function renderTheoryList() {
+    var done = load('theory', {});
+    $('#theoryList').innerHTML = '<p class="note" style="margin:4px 2px 10px">Short topics with sounds to tap. Start at the top.</p>' +
+      TOPICS.map(function (t, i) {
+        return '<button class="lcard" data-id="' + t.id + '"><b>' + (i + 1) + '. ' + t.title + '</b>' +
+          (done[t.id] ? '<span class="badge">✓</span>' : '') + '<span>' + t.sub + '</span></button>';
+      }).join('');
+    $$('#theoryList .lcard').forEach(function (b) { b.onclick = function () { openTopic(b.dataset.id); }; });
+  }
+
+  function openTopic(id) {
+    thStop();
+    var i = 0; while (TOPICS[i].id !== id) i++;
+    var t = TOPICS[i]; TH.topic = t;
+    var box = $('#theoryTopic'); box.innerHTML = ''; box.scrollTop = 0;
+    var head = document.createElement('div'); head.className = 'prow';
+    head.appendChild(btn('← Topics', closeTopic, 'link')); var h = document.createElement('b'); h.className = 'ttl'; h.textContent = t.title; head.appendChild(h);
+    box.appendChild(head);
+    t.build(box);
+    // quick check
+    var q = document.createElement('div'); q.className = 'quiz'; q.innerHTML = '<h4>Quick check</h4>';
+    var answered = 0;
+    t.quiz.forEach(function (it) {
+      var d = document.createElement('div'); d.className = 'qq'; d.innerHTML = '<p>' + it.q + '</p>';
+      var r = document.createElement('div'); r.className = 'opts';
+      it.o.forEach(function (o, k) {
+        var b = btn(o, function () {
+          if (d.dataset.done) return; d.dataset.done = 1; answered++;
+          b.classList.add(k === it.a ? 'right' : 'wrong'); r.children[it.a].classList.add('right');
+          if (answered === t.quiz.length) { var dn = load('theory', {}); dn[t.id] = true; store('theory', dn); }
+        }, '');
+        r.appendChild(b);
+      });
+      d.appendChild(r); q.appendChild(d);
+    });
+    box.appendChild(q);
+    if (TOPICS[i + 1]) box.appendChild(row(btn('Next: ' + TOPICS[i + 1].title + ' →', function () { openTopic(TOPICS[i + 1].id); }, 'sec sm accent')));
+    updateUI();
+  }
+  function closeTopic() { thStop(); TH.topic = null; renderTheoryList(); updateUI(); }
+
   // ------------------------------------------------------------ wiring
   $$('.seg button').forEach(function (b) {
-    b.onclick = function () { S.tab = b.dataset.tab; save(); stopListen(); if (S.tab === 'live') stopPractice(); else buildPractice(); updateUI(); };
+    b.onclick = function () { S.tab = b.dataset.tab; save(); stopListen(); stopLearnActivity(); thStop(); if (S.tab !== 'practice') stopPractice(); else buildPractice(); if (S.tab === 'learn') renderLearnList(); if (S.tab === 'theory') renderTheoryList(); updateUI(); };
   });
   $('#micBtn').onclick = function () {
     if (S.tab === 'live') { if (A.running) stopMic(); else startMic().catch(function () {}); }
     else { if (P.active) stopPractice(); else startPractice().catch(function () {}); }
   };
+  $('#demoBtn').onclick = playDemo;
+  $('#tryBtn').onclick = startTry;
+  $('#lBack').onclick = closeLesson;
   $('#listenBtn').onclick = function () { if (L.on) stopListen(); else startListen(); };
   $('#skipBtn').onclick = function () { if (P.judge) { P.judge.skip(latest.t); P.state = P.judge.state(latest.t); onAdvance(P.state); } };
   $('#restartBtn').onclick = function () { startPractice(); };
@@ -1574,14 +2604,14 @@ var RiyaazCore = (function () {
     if (!document.hidden && (A.running || T.on)) { keepAwake(true); if (A.ctx && A.ctx.state !== 'running') A.ctx.resume().catch(function () {}); }
   });
 
-  buildSettings(); buildRaagSelect(); buildPractice(); updateUI(); resize();
+  buildSettings(); buildRaagSelect(); buildPractice(); renderLearnList(); renderTheoryList(); updateUI(); resize();
   requestAnimationFrame(draw);
   setInterval(updateHint, 500);
 
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname))) navigator.serviceWorker.register('sw.js').catch(function () {});
 
   // for debugging in the console
-  window.riyaaz = { S: S, A: A, T: T, P: P, H: H };
+  window.riyaaz = { S: S, A: A, T: T, P: P, H: H, LS: LS, TH: TH };
 })();
 </script>
 </body>
