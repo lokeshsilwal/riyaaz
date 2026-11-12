@@ -1,6 +1,6 @@
 // Riyaaz service worker: keeps the app working offline.
 // When you upload a new version of any file, bump VERSION so phones pick it up.
-const VERSION = 'riyaaz-v2';
+const VERSION = 'riyaaz-v3';
 const FILES = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

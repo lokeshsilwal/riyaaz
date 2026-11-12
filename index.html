@@ -238,6 +238,7 @@ footer{display:flex;gap:10px;align-items:center;justify-content:center;padding:1
     <div class="row"><label>Listen speed</label><div class="opts" id="speedOpts">
       <button data-v="1.6">Slow</button><button data-v="1.1">Medium</button><button data-v="0.7">Fast</button>
     </div></div>
+    <label class="toggle"><input type="checkbox" id="listenBeat"> Play a beat with Listen</label>
 
     <h4>Microphone</h4>
     <div class="row"><label>Sensitivity</label><input type="range" id="sens" min="0.4" max="2.5" step="0.05"><output id="sensOut"></output></div>
@@ -873,7 +874,7 @@ var RiyaazCore = (function () {
   var S = Object.assign({
     note: 0, octave: 3, fine: 0, tuning: 'just', raag: 'yaman', tab: 'live',
     tanFirst: 'auto', tanVol: 0.6, tanCycle: 4.4, tolerance: 25, hold: 1, playRef: true,
-    exercise: 'aroha', sensitivity: 1, echo: false, listenStep: 1.1
+    exercise: 'aroha', sensitivity: 1, echo: false, listenStep: 1.1, listenBeat: true
   }, load('settings', {}));
   function save() { store('settings', S); }
 
@@ -935,6 +936,7 @@ var RiyaazCore = (function () {
       A.tanVol.connect(ctx.destination);
       A.tanVol.connect(A.merger, 0, 1);
       A.toneBus = ctx.createGain(); A.toneBus.gain.value = 0.5; A.toneBus.connect(ctx.destination);
+      A.beatBus = ctx.createGain(); A.beatBus.gain.value = 0.3; A.beatBus.connect(ctx.destination);
       ctx.onstatechange = updateHint;
     }
     return A.ctx.state === 'running' ? Promise.resolve() : A.ctx.resume();
@@ -1107,28 +1109,62 @@ var RiyaazCore = (function () {
 
   // ------------------------------------------------------------ listen to a whole exercise
   // Plays the selected exercise note by note over the tanpura, highlighting each chip.
-  var L = { on: false, idx: -1, seq: [], voices: [], timers: [], ownTanpura: false };
+  var L = { on: false, idx: -1, seq: [], voices: [], timers: [] };
+
+  // A soft tabla-like stroke: the dayan rings at Sa; an accented stroke adds the bayan's low thump.
+  var noiseBuf = null;
+  function beatAt(t, accent, soft) {
+    var ctx = A.ctx, out = ctx.createGain(), nodes = [];
+    out.gain.value = (soft ? 0.45 : 1) * 0.55;
+    out.connect(A.beatBus);
+    var sa = saHz(); while (sa < 260) sa *= 2;            // dayan tuned to Sa, in a bright octave
+    [[1, 1, 0.22], [2.0, 0.35, 0.12], [3.01, 0.18, 0.07]].forEach(function (h) {
+      var o = ctx.createOscillator(), g = ctx.createGain();
+      o.frequency.value = sa * h[0];
+      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(0.5 * h[1], t + 0.004);
+      g.gain.exponentialRampToValueAtTime(0.0005, t + h[2] * 2.5);
+      o.connect(g); g.connect(out); o.start(t); o.stop(t + h[2] * 2.5 + 0.02); nodes.push(o);
+    });
+    if (!noiseBuf) {
+      noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.03), ctx.sampleRate);
+      var d = noiseBuf.getChannelData(0);
+      for (var i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    }
+    var nz = ctx.createBufferSource(), hp = ctx.createBiquadFilter(), ng = ctx.createGain();
+    nz.buffer = noiseBuf; hp.type = 'highpass'; hp.frequency.value = 2500; ng.gain.value = 0.25;
+    nz.connect(hp); hp.connect(ng); ng.connect(out); nz.start(t); nodes.push(nz);
+    if (accent) {
+      var b = ctx.createOscillator(), bg = ctx.createGain();
+      b.frequency.setValueAtTime(140, t); b.frequency.exponentialRampToValueAtTime(65, t + 0.25);
+      bg.gain.setValueAtTime(0, t); bg.gain.linearRampToValueAtTime(0.9, t + 0.006);
+      bg.gain.exponentialRampToValueAtTime(0.0005, t + 0.6);
+      b.connect(bg); bg.connect(out); b.start(t); b.stop(t + 0.65); nodes.push(b);
+    }
+    return { g: out, stop: function (when) { nodes.forEach(function (n) { try { n.stop(when); } catch (e) {} }); } };
+  }
 
   function startListen() {
     stopPractice();
     $('#summary').hidden = true;
     L.seq = C.exerciseSequence(practiceRaag(), S.exercise);
-    L.on = true; L.idx = -1; L.ownTanpura = false;
+    L.on = true; L.idx = -1;
     renderChips(); updateUI();
-    var hadTanpura = T.on;
-    (hadTanpura ? ensureCtx() : startTanpura()).then(function () {
-      if (!L.on) { if (!hadTanpura && T.on) stopTanpura(); return; }
-      L.ownTanpura = !hadTanpura && T.on;
+    // Listen never switches the tanpura on; if you turned it on, it keeps playing underneath.
+    ensureCtx().then(function () {
+      if (!L.on) return;
       var ctx = A.ctx, step = S.listenStep, n = L.seq.length;
-      // let the tanpura settle for one round of strings before the first note
-      var t0 = ctx.currentTime + (hadTanpura ? 0.4 : Math.min(2.5, S.tanCycle * 0.55));
+      var group = S.exercise === 'alankar' ? 3 : 4;      // accent at the start of each group
+      var countIn = S.listenBeat ? 2 : 0;
+      var t0 = ctx.currentTime + 0.25 + countIn * step;
+      for (var c = 0; c < countIn; c++) L.voices.push(beatAt(t0 - (countIn - c) * step, false, true));
       L.seq.forEach(function (s, i) {
         var t = t0 + i * step, last = i === n - 1;
         L.voices.push(toneAt(s, t, last ? Math.max(1.6, step * 1.5) : step * 0.9));
+        if (S.listenBeat) L.voices.push(beatAt(t, i % group === 0 || last, false));
         L.timers.push(setTimeout(function () { L.idx = i; renderChips(); }, (t - ctx.currentTime) * 1000));
       });
       var end = t0 + (n - 1) * step + Math.max(1.6, step * 1.5);
-      L.timers.push(setTimeout(function () { stopListen(true); }, (end - ctx.currentTime) * 1000 + 200));
+      L.timers.push(setTimeout(function () { stopListen(); }, (end - ctx.currentTime) * 1000 + 200));
     });
   }
 
@@ -1139,12 +1175,12 @@ var RiyaazCore = (function () {
     if (A.ctx) {
       var now = A.ctx.currentTime;
       L.voices.forEach(function (v) {
-        try { v.g.gain.cancelScheduledValues(now); v.g.gain.setTargetAtTime(0, now, 0.03); v.o.stop(now + 0.2); } catch (e) {}
+        try { v.g.gain.cancelScheduledValues(now); v.g.gain.setTargetAtTime(0, now, 0.03); } catch (e) {}
+        try { if (v.stop) v.stop(now + 0.2); else v.o.stop(now + 0.2); } catch (e) {}
       });
     }
     L.voices = [];
     // turn the tanpura off again only if Listen turned it on
-    if (L.ownTanpura) { L.ownTanpura = false; setTimeout(function () { if (!L.on && T.on) stopTanpura(); }, finished ? 1200 : 0); }
     renderChips(); updateUI();
   }
 
@@ -1406,7 +1442,7 @@ var RiyaazCore = (function () {
   function updateHint() {
     var h = $('#hint');
     if (A.ctx && A.running && A.ctx.state !== 'running') h.textContent = 'Audio paused by the phone — tap Stop, then Start again.';
-    else if (L.on) h.textContent = 'Listen along — then press Start practice and sing it back.';
+    else if (L.on) h.textContent = L.idx < 0 && S.listenBeat ? 'Count-in…' : 'Listen along — then press Start practice and sing it back.';
     else if (!A.running) h.textContent = S.tab === 'live' ? 'Tap Start, then sing Sa and go up and down the scale.' : 'Choose an exercise, then Start practice.';
     else h.textContent = latest.cents == null && H.len < 60 ? 'Listening… sing a note.' : '';
   }
@@ -1469,6 +1505,7 @@ var RiyaazCore = (function () {
     range('tanVol', 'tanVol', function (v) { return Math.round(v * 100) + '%'; }, function () { if (A.ctx && T.on) A.tanVol.gain.setTargetAtTime(S.tanVol, A.ctx.currentTime, 0.05); });
     range('tanCycle', 'tanCycle', function (v) { return v.toFixed(1) + ' s'; });
     range('sens', 'sensitivity', function (v) { return v.toFixed(2) + '×'; }, function () { if (A.tracker) A.tracker.setSensitivity(S.sensitivity); });
+    $('#listenBeat').checked = S.listenBeat; $('#listenBeat').onchange = function () { S.listenBeat = this.checked; save(); };
     $('#playRef').checked = S.playRef; $('#playRef').onchange = function () { S.playRef = this.checked; save(); };
     $('#echo').checked = S.echo; $('#echo').onchange = function () {
       S.echo = this.checked; save();
